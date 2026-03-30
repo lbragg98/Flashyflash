@@ -105,14 +105,14 @@ export default function Home() {
               fill="oklch(0.65 0.22 265 / 0.15)"
             />
             <h1 className="text-3xl sm:text-4xl font-bold text-balance tracking-tight bg-clip-text">
-              <span className="text-foreground">Storm</span>
+              <span className="text-foreground">Flash</span>
               <span
                 style={{
                   color: "oklch(0.72 0.22 265)",
                   textShadow: "0 0 20px oklch(0.65 0.22 265 / 0.5)",
                 }}
               >
-                Strike
+                Hub
               </span>
             </h1>
             <CloudLightning
@@ -123,7 +123,7 @@ export default function Home() {
             />
           </div>
           <p className="text-muted-foreground text-sm sm:text-base max-w-md mx-auto text-balance leading-relaxed">
-            The definitive directory for tracking clubs — ratings, flash type, pricing, and more.
+            Discover. Compare. Flash.
           </p>
           <div className="lightning-divider max-w-xs mx-auto mt-4" />
         </header>
