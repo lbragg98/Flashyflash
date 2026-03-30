@@ -235,13 +235,13 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  @keyframes drift-cloud-slow,
-  @keyframes drift-cloud-slower,
-  @keyframes drift-mist,
-  @keyframes background-lightning-flash,
-  @keyframes lightning-glow-pulse,
-  @keyframes subtle-ambient-pulse {
-    0%, 100% { transform: none; opacity: var(--initial-opacity); }
+  .cloud-layer-1,
+  .cloud-layer-2,
+  .cloud-layer-3,
+  .storm-mist,
+  .lightning-flash-bg,
+  .ambient-glow {
+    animation: none;
   }
 }
 
