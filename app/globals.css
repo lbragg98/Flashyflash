@@ -1,247 +1,357 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
-/* Storm theme for Club Directory */
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* Storm theme — always dark */
-  --background: oklch(0.1 0.015 255);
-  --foreground: oklch(0.94 0.01 240);
-  --card: oklch(0.14 0.02 255);
-  --card-foreground: oklch(0.94 0.01 240);
-  --popover: oklch(0.12 0.02 255);
-  --popover-foreground: oklch(0.94 0.01 240);
-  --primary: oklch(0.65 0.22 265);
-  --primary-foreground: oklch(0.08 0.01 255);
-  --secondary: oklch(0.18 0.025 255);
-  --secondary-foreground: oklch(0.85 0.04 265);
-  --muted: oklch(0.17 0.02 255);
-  --muted-foreground: oklch(0.58 0.04 265);
-  --accent: oklch(0.55 0.28 285);
-  --accent-foreground: oklch(0.97 0.01 240);
-  --destructive: oklch(0.55 0.22 25);
-  --destructive-foreground: oklch(0.97 0 0);
-  --border: oklch(0.22 0.03 265);
-  --input: oklch(0.18 0.025 255);
-  --ring: oklch(0.65 0.22 265);
+  /* Cinematic Thunder Storm Palette */
+  --background: #050817;
+  --foreground: #f0f4ff;
+  
+  --primary: #00d4ff;
+  --primary-dark: #0099cc;
+  --primary-light: #4dffff;
+  
+  --accent: #b366ff;
+  --accent-dark: #7a2fbf;
+  --accent-light: #d699ff;
+  
+  --surface-1: #0f1425;
+  --surface-2: #151d35;
+  --surface-3: #1a2447;
+  
+  --storm-gray: #6b7793;
+  --storm-light: #8a96b4;
+  --destructive: #ff3366;
+  
   --radius: 0.75rem;
-
-  /* Lightning accent tokens */
-  --lightning: oklch(0.72 0.22 265);
-  --lightning-violet: oklch(0.62 0.26 285);
-  --storm-surface: oklch(0.14 0.02 255);
-  --storm-surface-raised: oklch(0.18 0.025 260);
-  --glow-blue: 0 0 16px oklch(0.65 0.22 265 / 0.45);
-  --glow-violet: 0 0 16px oklch(0.55 0.28 285 / 0.45);
 }
 
 @theme inline {
   --font-sans: 'Geist', 'Geist Fallback';
   --font-mono: 'Geist Mono', 'Geist Mono Fallback';
-  --color-lightning: var(--lightning);
-  --color-lightning-violet: var(--lightning-violet);
-  --color-storm-surface: var(--storm-surface);
-  --color-storm-surface-raised: var(--storm-surface-raised);
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
-  --color-destructive-foreground: var(--destructive-foreground);
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
 }
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply outline-ring/50;
   }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+  
   body {
-    @apply bg-background text-foreground;
+    @apply bg-[#050817] text-[#f0f4ff];
+    background-attachment: fixed;
   }
 }
 
-@layer utilities {
-  .glow-primary {
-    box-shadow: var(--glow-blue);
-  }
-  .glow-accent {
-    box-shadow: var(--glow-violet);
-  }
-  .lightning-divider {
-    height: 1px;
-    background: linear-gradient(90deg, transparent, oklch(0.65 0.22 265 / 0.6), oklch(0.55 0.28 285 / 0.6), transparent);
-  }
-  .glass-panel {
-    background: oklch(0.15 0.02 255 / 0.7);
-    backdrop-filter: blur(12px);
-    border: 1px solid oklch(0.65 0.22 265 / 0.2);
+/* ============================================================
+   ANIMATIONS
+   ============================================================ */
+
+@keyframes sky-pulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes cloud-drift-slow {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(40px); }
+}
+
+@keyframes cloud-drift-medium {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(-50px); }
+}
+
+@keyframes cloud-drift-fast {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(60px); }
+}
+
+@keyframes lightning-strike {
+  0%, 98%, 100% { opacity: 0; }
+  99% { opacity: 1; }
+}
+
+@keyframes lightning-secondary {
+  0%, 95%, 100% { opacity: 0; }
+  96%, 97% { opacity: 0.6; }
+  98% { opacity: 1; }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { filter: drop-shadow(0 0 10px rgba(0, 212, 255, 0.3)); }
+  50% { filter: drop-shadow(0 0 30px rgba(0, 212, 255, 0.8)); }
+}
+
+@keyframes shimmer-electric {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes float-up {
+  0% { transform: translateY(0); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translateY(-60px); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
 
-/* Storm background layers */
-.storm-bg-container {
+/* ============================================================
+   BACKGROUND SYSTEM
+   ============================================================ */
+
+.storm-background {
   position: fixed;
   inset: 0;
-  pointer-events: none;
   z-index: 0;
+  pointer-events: none;
   overflow: hidden;
 }
 
-.storm-sky {
+.sky-base {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, 
-    oklch(0.08 0.012 255) 0%,
-    oklch(0.1 0.015 255) 50%,
-    oklch(0.12 0.018 260) 100%);
+  background: linear-gradient(
+    180deg,
+    #0a0e1a 0%,
+    #050817 30%,
+    #0f1425 60%,
+    #1a1f3a 100%
+  );
 }
 
-.storm-cloud {
+.sky-glow {
   position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at 50% 20%,
+    rgba(0, 212, 255, 0.08) 0%,
+    transparent 60%
+  );
+  animation: sky-pulse 6s ease-in-out infinite;
+}
+
+.cloud-container {
+  position: absolute;
+  inset: 0;
+  opacity: 0.4;
+}
+
+.cloud-1 {
+  position: absolute;
+  width: 400px;
+  height: 200px;
+  background: linear-gradient(
+    135deg,
+    rgba(15, 20, 37, 0.8),
+    rgba(21, 29, 53, 0.6)
+  );
   border-radius: 50%;
-  filter: blur(40px);
-  mix-blend-mode: screen;
+  top: 10%;
+  left: 5%;
+  filter: blur(60px);
+  animation: cloud-drift-slow 40s ease-in-out infinite;
 }
 
-.cloud-layer-1 {
-  width: 600px;
-  height: 300px;
-  background: radial-gradient(ellipse at center, oklch(0.3 0.02 255 / 0.7), transparent);
-  top: 5%;
-  left: -10%;
-  animation: drift-cloud-slow 25s ease-in-out infinite;
-}
-
-.cloud-layer-2 {
-  width: 700px;
-  height: 350px;
-  background: radial-gradient(ellipse at center, oklch(0.25 0.015 260 / 0.6), transparent);
-  top: 25%;
-  right: -15%;
-  animation: drift-cloud-slower 35s ease-in-out infinite;
-}
-
-.cloud-layer-3 {
+.cloud-2 {
+  position: absolute;
   width: 500px;
   height: 250px;
-  background: radial-gradient(ellipse at center, oklch(0.28 0.018 255 / 0.65), transparent);
+  background: linear-gradient(
+    135deg,
+    rgba(26, 36, 71, 0.7),
+    rgba(15, 20, 37, 0.5)
+  );
+  border-radius: 50%;
+  top: 30%;
+  right: 10%;
+  filter: blur(70px);
+  animation: cloud-drift-medium 50s ease-in-out infinite reverse;
+}
+
+.cloud-3 {
+  position: absolute;
+  width: 350px;
+  height: 180px;
+  background: linear-gradient(
+    135deg,
+    rgba(21, 29, 53, 0.6),
+    rgba(10, 14, 26, 0.4)
+  );
+  border-radius: 50%;
   bottom: 20%;
-  left: 10%;
-  animation: drift-cloud-slow 30s ease-in-out infinite reverse;
+  left: 20%;
+  filter: blur(50px);
+  animation: cloud-drift-fast 45s ease-in-out infinite;
 }
 
-.storm-mist {
+.lightning-flash {
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse at 50% 100%, oklch(0.12 0.01 265 / 0.25), transparent);
-  animation: drift-mist 20s ease-in-out infinite;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(0, 212, 255, 0.1) 25%,
+    rgba(179, 102, 255, 0.08) 50%,
+    rgba(0, 212, 255, 0.1) 75%,
+    transparent 100%
+  );
+  animation: lightning-strike 7s ease-in-out 2s infinite;
 }
 
-.lightning-flash-bg {
+.lightning-secondary {
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, 
-    oklch(0.65 0.22 265 / 0) 0%,
-    oklch(0.65 0.22 265 / 0.25) 30%,
-    oklch(0.65 0.22 265 / 0.35) 50%,
-    oklch(0.65 0.22 265 / 0.25) 70%,
-    oklch(0.65 0.22 265 / 0) 100%);
-  animation: background-lightning-flash 12s ease-in-out infinite 2s;
+  background: radial-gradient(
+    ellipse at 60% 40%,
+    rgba(179, 102, 255, 0.15) 0%,
+    transparent 50%
+  );
+  animation: lightning-secondary 7s ease-in-out 2s infinite;
+}
+
+.mist-layer {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at 50% 100%,
+    rgba(26, 36, 71, 0.3),
+    transparent 70%
+  );
   pointer-events: none;
 }
 
-.ambient-glow {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse at 50% 30%, oklch(0.65 0.22 265 / 0.15), transparent);
-  animation: subtle-ambient-pulse 8s ease-in-out infinite;
-}
+/* ============================================================
+   CONTENT WRAPPER
+   ============================================================ */
 
-.storm-content {
+.content-wrapper {
   position: relative;
   z-index: 10;
 }
 
-.animate-pulse-glow {
-  animation: pulse-glow 2.5s ease-in-out infinite;
+/* ============================================================
+   REUSABLE UI STYLES
+   ============================================================ */
+
+.storm-panel {
+  background: linear-gradient(
+    135deg,
+    rgba(21, 29, 53, 0.6),
+    rgba(15, 20, 37, 0.4)
+  );
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(0, 212, 255, 0.15);
+  border-radius: var(--radius);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
-@keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 8px oklch(0.65 0.22 265 / 0.35); }
-  50% { box-shadow: 0 0 20px oklch(0.65 0.22 265 / 0.7), 0 0 40px oklch(0.55 0.28 285 / 0.3); }
+.storm-panel-dark {
+  background: linear-gradient(
+    135deg,
+    rgba(15, 20, 37, 0.8),
+    rgba(10, 14, 26, 0.6)
+  );
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(0, 212, 255, 0.1);
+  border-radius: var(--radius);
+  box-shadow: 
+    0 12px 40px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03);
 }
 
-@keyframes drift-cloud-slow {
-  0%, 100% { transform: translateX(0) translateY(0); }
-  33% { transform: translateX(30px) translateY(-10px); }
-  66% { transform: translateX(-20px) translateY(8px); }
+.storm-input {
+  @apply bg-[#0f1425] text-[#f0f4ff] border border-[#00d4ff]/20 rounded-lg px-3.5 py-2.5 text-sm;
+  @apply focus:outline-none focus:border-[#00d4ff]/50 focus:ring-1 focus:ring-[#00d4ff]/30;
+  @apply placeholder:text-[#6b7793] transition-all duration-200;
+  
+  background: linear-gradient(135deg, rgba(15, 20, 37, 0.6), rgba(21, 29, 53, 0.4));
+  backdrop-filter: blur(10px);
 }
 
-@keyframes drift-cloud-slower {
-  0%, 100% { transform: translateX(0) translateY(0); }
-  33% { transform: translateX(-40px) translateY(15px); }
-  66% { transform: translateX(20px) translateY(-12px); }
+.storm-button {
+  @apply px-4 py-2.5 rounded-lg font-medium text-sm transition-all duration-200;
+  @apply bg-[#00d4ff] text-[#050817] hover:bg-[#4dffff] active:scale-95;
+  @apply shadow-lg hover:shadow-xl;
+  background: linear-gradient(135deg, #00d4ff, #0099cc);
 }
 
-@keyframes drift-mist {
-  0%, 100% { transform: translateX(0); opacity: 0.15; }
-  50% { transform: translateX(20px); opacity: 0.2; }
+.storm-button-outline {
+  @apply px-4 py-2.5 rounded-lg font-medium text-sm transition-all duration-200;
+  @apply border border-[#00d4ff]/40 text-[#00d4ff] hover:bg-[#00d4ff]/10;
+  @apply hover:border-[#00d4ff]/60;
 }
 
-@keyframes background-lightning-flash {
-  0%, 8%, 10%, 12%, 16%, 18%, 100% { opacity: 0; }
-  9%, 11%, 17% { opacity: 1; }
+.storm-button-secondary {
+  @apply px-4 py-2.5 rounded-lg font-medium text-sm transition-all duration-200;
+  @apply bg-[#b366ff]/20 text-[#d699ff] hover:bg-[#b366ff]/30;
+  @apply border border-[#b366ff]/30 hover:border-[#b366ff]/60;
 }
 
-@keyframes subtle-ambient-pulse {
-  0%, 100% { opacity: 0.15; }
-  50% { opacity: 0.25; }
+.storm-badge {
+  @apply inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs font-semibold;
+  @apply bg-[#00d4ff]/15 text-[#4dffff] border border-[#00d4ff]/30;
 }
 
-@keyframes rain-fall {
-  0% { transform: translateY(-100%); opacity: 0; }
-  10% { opacity: 0.3; }
-  90% { opacity: 0.3; }
-  100% { transform: translateY(100vh); opacity: 0; }
+.storm-badge-accent {
+  @apply inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs font-semibold;
+  @apply bg-[#b366ff]/15 text-[#d699ff] border border-[#b366ff]/30;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .cloud-layer-1,
-  .cloud-layer-2,
-  .cloud-layer-3,
-  .storm-mist,
-  .lightning-flash-bg,
-  .ambient-glow {
-    animation: none;
-  }
+.storm-divider {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(0, 212, 255, 0.3),
+    rgba(179, 102, 255, 0.2),
+    transparent
+  );
+}
+
+.shimmer-text {
+  background: linear-gradient(
+    90deg,
+    #f0f4ff,
+    #00d4ff,
+    #b366ff,
+    #f0f4ff
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer-electric 3s linear infinite;
+}
+
+.glow-electric-blue {
+  filter: drop-shadow(0 0 12px rgba(0, 212, 255, 0.5));
+}
+
+.glow-electric-violet {
+  filter: drop-shadow(0 0 12px rgba(179, 102, 255, 0.5));
+}
+
+.shadow-storm {
+  box-shadow: 
+    0 4px 24px rgba(0, 0, 0, 0.4),
+    0 0 1px rgba(0, 212, 255, 0.1) inset;
+}
+
+.shadow-storm-lg {
+  box-shadow: 
+    0 20px 60px rgba(0, 0, 0, 0.6),
+    0 0 2px rgba(0, 212, 255, 0.15) inset;
 }

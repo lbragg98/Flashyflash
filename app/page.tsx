@@ -84,56 +84,30 @@ export default function Home() {
   }, [clubs, search, filters, sort]);
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Subtle storm radial gradient overlay */}
-      <div
-        className="pointer-events-none fixed inset-0 z-0"
-        aria-hidden="true"
-        style={{
-          background:
-            "radial-gradient(ellipse 80% 40% at 50% 0%, oklch(0.55 0.28 285 / 0.08) 0%, transparent 70%), radial-gradient(ellipse 60% 30% at 20% 100%, oklch(0.65 0.22 265 / 0.06) 0%, transparent 70%)",
-        }}
-      />
-
-      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+    <div className="min-h-screen">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
         {/* Header */}
-        <header className="mb-8 sm:mb-10 text-center">
-          <div className="flex items-center justify-center gap-2 mb-3">
-            <CloudLightning
-              size={28}
-              className="text-primary animate-lightning"
-              fill="oklch(0.65 0.22 265 / 0.15)"
-            />
-            <h1 className="text-3xl sm:text-4xl font-bold text-balance tracking-tight bg-clip-text">
-              <span className="text-foreground">Storm</span>
-              <span
-                style={{
-                  color: "oklch(0.72 0.22 265)",
-                  textShadow: "0 0 20px oklch(0.65 0.22 265 / 0.5)",
-                }}
-              >
-                Strike
-              </span>
+        <header className="mb-10 sm:mb-14 text-center">
+          <div className="inline-flex items-center justify-center gap-3 mb-4">
+            <div className="h-1 w-8 bg-gradient-to-r from-[#00d4ff] to-[#b366ff]" />
+            <h1 className="text-4xl sm:text-5xl font-black tracking-tighter">
+              <span className="text-[#f0f4ff]">STORM</span>
+              <span className="text-[#00d4ff]">STRIKE</span>
             </h1>
-            <CloudLightning
-              size={28}
-              className="text-accent animate-lightning"
-              fill="oklch(0.55 0.28 285 / 0.15)"
-              style={{ animationDelay: "1.5s" }}
-            />
+            <div className="h-1 w-8 bg-gradient-to-l from-[#00d4ff] to-[#b366ff]" />
           </div>
-          <p className="text-muted-foreground text-sm sm:text-base max-w-md mx-auto text-balance leading-relaxed">
-            The definitive directory for tracking clubs — ratings, flash type, pricing, and more.
+          <p className="text-[#8a96b4] text-sm sm:text-base max-w-xl mx-auto leading-relaxed mb-6">
+            The definitive club directory. Filter by type, rating, speed, and more.
           </p>
-          <div className="lightning-divider max-w-xs mx-auto mt-4" />
+          <div className="storm-divider max-w-xs mx-auto" />
         </header>
 
         {/* Search */}
-        <div className="mb-4 relative">
+        <div className="mb-6 relative">
           <label htmlFor="search" className="sr-only">Search clubs</label>
           <Search
             size={16}
-            className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none"
+            className="absolute left-4 top-1/2 -translate-y-1/2 text-[#6b7793] pointer-events-none"
           />
           <input
             id="search"
@@ -141,13 +115,12 @@ export default function Home() {
             placeholder="Search clubs..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-10 pr-4 py-3 rounded-xl bg-secondary border border-border text-foreground placeholder:text-muted-foreground text-sm focus:outline-none focus:ring-2 focus:ring-ring focus:border-primary transition-all"
+            className="storm-input w-full pl-10 pr-4 py-3 text-base"
           />
         </div>
 
         {/* Filter bar */}
-        <div className="mb-6">
-          <FilterBar
+        <div className="mb-8"
             filters={filters}
             sort={sort}
             onFiltersChange={setFilters}
@@ -158,17 +131,17 @@ export default function Home() {
 
         {/* Grid */}
         {loading ? (
-          <main className="flex flex-col items-center justify-center py-24 gap-3">
-            <div className="w-8 h-8 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
-            <p className="text-muted-foreground text-sm">Loading clubs...</p>
+          <main className="flex flex-col items-center justify-center py-32 gap-4">
+            <div className="w-10 h-10 border-2 border-[#00d4ff]/20 border-t-[#00d4ff] rounded-full animate-spin" />
+            <p className="text-[#8a96b4] text-sm">Loading clubs...</p>
           </main>
         ) : error ? (
-          <main className="flex flex-col items-center justify-center py-24 gap-3 text-center">
-            <Zap size={36} className="text-destructive/30" />
-            <p className="text-destructive text-sm">{error}</p>
+          <main className="flex flex-col items-center justify-center py-32 gap-4 text-center">
+            <Zap size={40} className="text-[#ff3366]/30" />
+            <p className="text-[#ff3366] text-sm">{error}</p>
             <button
               onClick={() => window.location.reload()}
-              className="text-xs text-primary hover:underline"
+              className="text-xs text-[#00d4ff] hover:text-[#4dffff] transition-colors"
             >
               Try again
             </button>
@@ -182,15 +155,15 @@ export default function Home() {
             </div>
           </main>
         ) : (
-          <main className="flex flex-col items-center justify-center py-24 gap-3 text-center">
-            <Zap size={36} className="text-muted-foreground/30" />
-            <p className="text-muted-foreground text-sm">No clubs match your current filters.</p>
+          <main className="flex flex-col items-center justify-center py-32 gap-4 text-center">
+            <Zap size={40} className="text-[#6b7793]/30" />
+            <p className="text-[#8a96b4] text-sm">No clubs match your filters.</p>
             <button
               onClick={() => {
                 setSearch("");
                 setFilters(DEFAULT_FILTERS);
               }}
-              className="text-xs text-primary hover:underline"
+              className="text-xs text-[#00d4ff] hover:text-[#4dffff] transition-colors"
             >
               Clear search &amp; filters
             </button>
@@ -198,9 +171,9 @@ export default function Home() {
         )}
 
         {/* Footer */}
-        <footer className="mt-12 text-center">
-          <div className="lightning-divider max-w-xs mx-auto mb-4" />
-          <p className="text-[11px] text-muted-foreground">
+        <footer className="mt-16 text-center">
+          <div className="storm-divider max-w-xs mx-auto mb-4" />
+          <p className="text-xs text-[#6b7793]">
             {clubs.length} clubs in the directory
           </p>
         </footer>

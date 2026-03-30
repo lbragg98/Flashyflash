@@ -60,10 +60,10 @@ function ToggleChip({
   return (
     <button
       onClick={onClick}
-      className={`px-3 py-1 text-xs font-medium rounded-full border transition-all duration-150 ${
+      className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 border ${
         active
-          ? "bg-primary text-primary-foreground border-primary glow-primary"
-          : "bg-transparent text-muted-foreground border-border hover:border-primary/50 hover:text-foreground"
+          ? "bg-[#00d4ff]/25 text-[#4dffff] border-[#00d4ff]/50"
+          : "bg-[#1a2447]/50 text-[#8a96b4] border-[#00d4ff]/10 hover:border-[#00d4ff]/30"
       }`}
     >
       {children}
@@ -86,125 +86,115 @@ export function FilterBar({
     filters.flashType !== null ||
     filters.ratingMin > 0;
 
-  const reset = () => onFiltersChange(DEFAULT_FILTERS);
-
   return (
-    <div className="glass-panel rounded-xl overflow-hidden">
-      {/* Top bar */}
-      <div className="flex items-center gap-3 px-4 py-3">
-        <button
-          onClick={() => setExpanded((v) => !v)}
-          className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-          aria-expanded={expanded}
-        >
-          <SlidersHorizontal size={15} className="text-primary" />
-          Filters
-          {hasActiveFilters && (
-            <span className="bg-primary text-primary-foreground text-[10px] font-bold px-1.5 py-0.5 rounded-full leading-none">
-              ON
-            </span>
-          )}
-          <ChevronDown
-            size={14}
-            className={`transition-transform duration-200 ${expanded ? "rotate-180" : ""}`}
-          />
-        </button>
-
-        <div className="flex-1" />
-
-        <span className="text-xs text-muted-foreground hidden sm:block">
-          {resultCount} club{resultCount !== 1 ? "s" : ""}
-        </span>
-
-        {/* Sort */}
-        <div className="relative">
+    <div className="space-y-3">
+      {/* Top bar: Sort and Expand */}
+      <div className="storm-panel flex items-center justify-between gap-3 p-3">
+        <div className="flex items-center gap-2 min-w-0">
+          <SlidersHorizontal size={16} className="text-[#00d4ff] shrink-0" />
           <select
             value={sort}
             onChange={(e) => onSortChange(e.target.value as SortKey)}
-            className="appearance-none text-xs bg-secondary text-foreground border border-border rounded-lg pl-3 pr-7 py-1.5 cursor-pointer hover:border-primary/50 transition-colors focus:outline-none focus:ring-1 focus:ring-ring"
-            aria-label="Sort clubs"
+            className="storm-input text-xs py-1.5 px-2"
           >
-            {SORT_OPTIONS.map((o) => (
-              <option key={o.value} value={o.value}>
-                {o.label}
+            {SORT_OPTIONS.map((opt) => (
+              <option key={opt.value} value={opt.value}>
+                {opt.label}
               </option>
             ))}
           </select>
-          <ChevronDown
-            size={12}
-            className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-muted-foreground"
-          />
         </div>
 
-        {hasActiveFilters && (
+        <div className="flex items-center gap-2 shrink-0">
+          <span className="text-xs text-[#8a96b4] font-medium">
+            {resultCount} {resultCount === 1 ? "result" : "results"}
+          </span>
           <button
-            onClick={reset}
-            className="flex items-center gap-1 text-xs text-muted-foreground hover:text-destructive transition-colors"
-            aria-label="Clear all filters"
+            onClick={() => setExpanded(!expanded)}
+            className={`p-1.5 rounded-lg transition-all duration-200 ${
+              expanded || hasActiveFilters
+                ? "bg-[#00d4ff]/20 text-[#4dffff] border border-[#00d4ff]/40"
+                : "text-[#6b7793] hover:text-[#00d4ff]"
+            }`}
           >
-            <X size={12} />
-            Clear
+            <ChevronDown size={16} className={`transition-transform ${expanded ? "rotate-180" : ""}`} />
           </button>
-        )}
+        </div>
       </div>
 
-      {/* Expanded filter panel */}
+      {/* Expanded filters panel */}
       {expanded && (
-        <div className="border-t border-border/50 px-4 py-4 flex flex-col gap-4">
+        <div className="storm-panel-dark p-4 space-y-4">
           {/* Flash Type */}
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="text-xs text-muted-foreground w-24 shrink-0">Flash Type</span>
-            <div className="flex flex-wrap gap-1.5">
-              {FLASH_TYPES.map((ft) => (
+          <div>
+            <div className="text-xs uppercase tracking-wide font-bold text-[#4dffff] mb-2">
+              Flash Type
+            </div>
+            <div className="flex gap-1.5 flex-wrap">
+              {FLASH_TYPES.map((type) => (
                 <ToggleChip
-                  key={ft}
-                  active={filters.flashType === ft}
+                  key={type}
+                  active={filters.flashType === type}
                   onClick={() =>
                     onFiltersChange({
                       ...filters,
-                      flashType: filters.flashType === ft ? null : ft,
+                      flashType: filters.flashType === type ? null : type,
                     })
                   }
                 >
-                  {ft}
+                  {type}
                 </ToggleChip>
               ))}
             </div>
           </div>
 
-          {/* SFW */}
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="text-xs text-muted-foreground w-24 shrink-0">SFW</span>
-            <div className="flex flex-wrap gap-1.5">
-              <ToggleChip
-                active={filters.sfwFriendly === true}
-                onClick={() =>
-                  onFiltersChange({
-                    ...filters,
-                    sfwFriendly: filters.sfwFriendly === true ? null : true,
-                  })
-                }
-              >
-                SFW Friendly
-              </ToggleChip>
-              <ToggleChip
-                active={filters.sfwActive === true}
-                onClick={() =>
-                  onFiltersChange({
-                    ...filters,
-                    sfwActive: filters.sfwActive === true ? null : true,
-                  })
-                }
-              >
-                SFW Active
-              </ToggleChip>
+          <div className="storm-divider" />
+
+          {/* SFW Filters */}
+          <div>
+            <div className="text-xs uppercase tracking-wide font-bold text-[#4dffff] mb-2">
+              SFW Options
+            </div>
+            <div className="space-y-1.5">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={filters.sfwFriendly === true}
+                  onChange={() =>
+                    onFiltersChange({
+                      ...filters,
+                      sfwFriendly: filters.sfwFriendly === true ? null : true,
+                    })
+                  }
+                  className="w-4 h-4 rounded bg-[#1a2447] border border-[#00d4ff]/30 cursor-pointer"
+                />
+                <span className="text-sm text-[#f0f4ff]">SFW Friendly</span>
+              </label>
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={filters.sfwActive === true}
+                  onChange={() =>
+                    onFiltersChange({
+                      ...filters,
+                      sfwActive: filters.sfwActive === true ? null : true,
+                    })
+                  }
+                  className="w-4 h-4 rounded bg-[#1a2447] border border-[#00d4ff]/30 cursor-pointer"
+                />
+                <span className="text-sm text-[#f0f4ff]">SFW Active</span>
+              </label>
             </div>
           </div>
 
-          {/* Rating Min */}
-          <div className="flex flex-wrap items-center gap-3">
-            <span className="text-xs text-muted-foreground w-24 shrink-0">Min Rating</span>
-            <div className="flex gap-1.5">
+          <div className="storm-divider" />
+
+          {/* Min Rating */}
+          <div>
+            <div className="text-xs uppercase tracking-wide font-bold text-[#4dffff] mb-2">
+              Min Rating
+            </div>
+            <div className="flex gap-1.5 flex-wrap">
               {[0, 3, 3.5, 4, 4.5].map((r) => (
                 <ToggleChip
                   key={r}
@@ -221,6 +211,19 @@ export function FilterBar({
               ))}
             </div>
           </div>
+
+          {/* Clear Filters */}
+          {hasActiveFilters && (
+            <>
+              <div className="storm-divider" />
+              <button
+                onClick={() => onFiltersChange(DEFAULT_FILTERS)}
+                className="w-full py-2 rounded-lg text-xs font-semibold text-[#ff3366] border border-[#ff3366]/30 hover:bg-[#ff3366]/10 transition-all duration-200"
+              >
+                Clear All Filters
+              </button>
+            </>
+          )}
         </div>
       )}
     </div>

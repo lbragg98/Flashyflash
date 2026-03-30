@@ -37,33 +37,24 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="font-sans antialiased">
-        {/* Storm background environment */}
-        <div className="storm-bg-container">
-          <div className="storm-sky" />
-          <div className="cloud-layer-1 storm-cloud" />
-          <div className="cloud-layer-2 storm-cloud" />
-          <div className="cloud-layer-3 storm-cloud" />
-          <div className="storm-mist" />
-          <div className="lightning-flash-bg" />
-          <div className="ambient-glow" />
+        {/* Cinematic Storm Background */}
+        <div className="storm-background">
+          <div className="sky-base" />
+          <div className="sky-glow" />
           
-          {/* Rain streaks */}
-          {[...Array(6)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute w-px bg-gradient-to-b from-transparent via-blue-300/30 to-transparent pointer-events-none"
-              style={{
-                height: '100vh',
-                left: `${Math.random() * 100}%`,
-                animation: `rain-fall ${2 + Math.random() * 1.5}s linear infinite`,
-                animationDelay: `${Math.random() * 2}s`,
-              }}
-            />
-          ))}
+          <div className="cloud-container">
+            <div className="cloud-1" />
+            <div className="cloud-2" />
+            <div className="cloud-3" />
+          </div>
+          
+          <div className="lightning-flash" />
+          <div className="lightning-secondary" />
+          <div className="mist-layer" />
         </div>
 
-        {/* Content above background */}
-        <div className="storm-content">
+        {/* Page Content */}
+        <div className="content-wrapper">
           {children}
           <Analytics />
         </div>
