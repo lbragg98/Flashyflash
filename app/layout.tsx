@@ -37,8 +37,22 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="font-sans antialiased">
-        {children}
-        <Analytics />
+        {/* Storm background environment */}
+        <div className="storm-bg-container">
+          <div className="storm-sky" />
+          <div className="cloud-layer-1 storm-cloud" />
+          <div className="cloud-layer-2 storm-cloud" />
+          <div className="cloud-layer-3 storm-cloud" />
+          <div className="storm-mist" />
+          <div className="lightning-flash-bg" />
+          <div className="ambient-glow" />
+        </div>
+
+        {/* Content above background */}
+        <div className="storm-content">
+          {children}
+          <Analytics />
+        </div>
       </body>
     </html>
   )
