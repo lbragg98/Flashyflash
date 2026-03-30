@@ -3,15 +3,8 @@ import { Geist, Geist_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 
-const geist = Geist({
-  subsets: ['latin'],
-  variable: '--font-geist-sans',
-})
-
-const geistMono = Geist_Mono({
-  subsets: ['latin'],
-  variable: '--font-geist-mono',
-})
+const _geist = Geist({ subsets: ["latin"] });
+const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: 'StormStrike — Club Directory',
@@ -42,30 +35,37 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className="dark">
-      <body className={`${geist.variable} ${geistMono.variable} font-sans antialiased bg-background text-foreground`}>
-        <div className="min-h-screen">
-          {/* Cinematic Storm Background */}
-          <div className="storm-background">
-            <div className="sky-base" />
-            <div className="sky-glow" />
-            
-            <div className="cloud-container">
-              <div className="cloud-1" />
-              <div className="cloud-2" />
-              <div className="cloud-3" />
-            </div>
-            
-            <div className="lightning-flash" />
-            <div className="lightning-secondary" />
-            <div className="mist-layer" />
-          </div>
+    <html lang="en">
+      <body className="font-sans antialiased">
+        {/* Storm background environment */}
+        <div className="storm-bg-container">
+          <div className="storm-sky" />
+          <div className="cloud-layer-1 storm-cloud" />
+          <div className="cloud-layer-2 storm-cloud" />
+          <div className="cloud-layer-3 storm-cloud" />
+          <div className="storm-mist" />
+          <div className="lightning-flash-bg" />
+          <div className="ambient-glow" />
+          
+          {/* Rain streaks */}
+          {[...Array(6)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute w-px bg-gradient-to-b from-transparent via-blue-300/30 to-transparent pointer-events-none"
+              style={{
+                height: '100vh',
+                left: `${Math.random() * 100}%`,
+                animation: `rain-fall ${2 + Math.random() * 1.5}s linear infinite`,
+                animationDelay: `${Math.random() * 2}s`,
+              }}
+            />
+          ))}
+        </div>
 
-          {/* Page Content */}
-          <div className="content-wrapper relative z-10">
-            {children}
-            <Analytics />
-          </div>
+        {/* Content above background */}
+        <div className="storm-content">
+          {children}
+          <Analytics />
         </div>
       </body>
     </html>
