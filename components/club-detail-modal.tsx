@@ -7,15 +7,13 @@ import {
   Copy,
   Check,
   Star,
-  Hash,
-  Clock,
-  Zap,
   MessageSquare,
   Gauge,
   Wind,
   Package,
   Calendar,
   Timer,
+  Link2,
 } from "lucide-react";
 
 interface ClubDetailModalProps {
@@ -23,25 +21,27 @@ interface ClubDetailModalProps {
   onClose: () => void;
 }
 
-function StatBar({ value, max = 5, color = "primary" }: { value: number; max?: number; color?: string }) {
+function StatBar({
+  value,
+  max = 5,
+}: {
+  value: number;
+  max?: number;
+}) {
   const pct = Math.min(100, (value / max) * 100);
-  const colorClass =
-    color === "accent"
-      ? "bg-accent"
-      : color === "yellow"
-        ? "bg-yellow-400"
-        : color === "teal"
-          ? "bg-teal-400"
-          : "bg-primary";
+
   return (
-    <div className="flex items-center gap-2 w-full">
-      <div className="flex-1 h-1.5 rounded-full bg-border overflow-hidden">
+    <div className="w-full">
+      <div className="mb-1 flex items-center justify-between text-xs text-[#9ea9c5]">
+        <span>{value.toFixed(1)}</span>
+        <span>{max}</span>
+      </div>
+      <div className="h-2 overflow-hidden rounded-full bg-white/8">
         <div
-          className={`h-full rounded-full transition-all duration-500 ${colorClass}`}
+          className="h-full rounded-full bg-gradient-to-r from-[#71c7ff] to-[#a977ff]"
           style={{ width: `${pct}%` }}
         />
       </div>
-      <span className="text-xs font-semibold text-foreground w-6 text-right">{value}</span>
     </div>
   );
 }
@@ -56,210 +56,188 @@ function DetailRow({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex items-start gap-3 py-2.5 border-b border-border/40 last:border-0">
-      <span className="text-muted-foreground shrink-0 mt-0.5">{icon}</span>
-      <div className="flex-1 min-w-0">
-        <div className="text-[10px] uppercase tracking-widest text-muted-foreground mb-0.5 font-medium">
+    <div className="flex items-start gap-3 rounded-2xl border border-white/6 bg-white/[0.03] p-3">
+      <div className="mt-0.5 text-[#8fcfff]">{icon}</div>
+      <div className="min-w-0 flex-1">
+        <p className="text-[11px] uppercase tracking-wide text-[#8f9bbb]">
           {label}
-        </div>
-        <div className="text-sm text-foreground">{children}</div>
+        </p>
+        <div className="mt-1 text-sm text-white">{children}</div>
       </div>
     </div>
   );
 }
 
-const FLASH_TYPE_COLORS: Record<string, string> = {
-  Dog: "text-primary border-primary/40 bg-primary/10",
-  Cat: "text-accent border-accent/40 bg-accent/10",
-  Invites: "text-yellow-400 border-yellow-400/40 bg-yellow-400/10",
-  Hybrid: "text-teal-400 border-teal-400/40 bg-teal-400/10",
+const FLASH_TYPE_STYLES: Record<string, string> = {
+  Dog: "border-sky-400/30 bg-sky-400/10 text-sky-200",
+  Cat: "border-fuchsia-400/30 bg-fuchsia-400/10 text-fuchsia-200",
+  Invites: "border-amber-400/30 bg-amber-400/10 text-amber-200",
+  Hybrid: "border-teal-400/30 bg-teal-400/10 text-teal-200",
 };
 
-export function ClubDetailModal({ club, onClose }: ClubDetailModalProps) {
+export function ClubDetailModal({
+  club,
+  onClose,
+}: ClubDetailModalProps) {
   const [copied, setCopied] = useState(false);
-
-  const handleCopy = async () => {
-    if (club?.quickLink) {
-      await navigator.clipboard.writeText(club.quickLink);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1500);
-    }
-  };
 
   useEffect(() => {
     if (!club) return;
+
     const handler = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
     };
+
     document.addEventListener("keydown", handler);
     document.body.style.overflow = "hidden";
+
     return () => {
       document.removeEventListener("keydown", handler);
       document.body.style.overflow = "";
     };
   }, [club, onClose]);
 
+  const handleCopy = async () => {
+    if (!club?.quickLink) return;
+
+    await navigator.clipboard.writeText(club.quickLink);
+    setCopied(true);
+    window.setTimeout(() => setCopied(false), 1500);
+  };
+
   if (!club) return null;
 
-  const flashColor = FLASH_TYPE_COLORS[club.flashType] ?? "text-foreground border-border bg-secondary";
+  const flashTypeClass =
+    FLASH_TYPE_STYLES[club.flashType] ??
+    "border-white/10 bg-white/5 text-white";
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4"
-      role="dialog"
-      aria-modal="true"
-      aria-label={`Details for ${club.name}`}
-    >
-      {/* Backdrop */}
-      <div
-        className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
+      <button
+        aria-label="Close modal backdrop"
+        className="absolute inset-0 bg-[#050814]/70 backdrop-blur-sm"
         onClick={onClose}
-        aria-hidden="true"
       />
 
-      {/* Panel */}
-      <div className="relative z-10 w-full sm:max-w-lg max-h-[92dvh] sm:max-h-[85dvh] flex flex-col glass-panel sm:rounded-2xl rounded-t-2xl overflow-hidden shadow-[0_0_60px_oklch(0.55_0.28_285/0.25)]">
-        {/* Lightning accent top border */}
-        <div className="lightning-divider" />
+      <div className="storm-panel relative z-10 flex max-h-[90vh] w-full max-w-3xl flex-col overflow-hidden rounded-[28px] outline outline-1 outline-[#71c7ff]/30 shadow-[0_0_0_1px_rgba(113,199,255,0.15),0_32px_80px_rgba(0,0,0,0.6),0_0_60px_rgba(113,199,255,0.12)]">
+        <div className="h-1 w-full bg-gradient-to-r from-[#71c7ff] via-[#c6ebff] to-[#a977ff]" />
 
-        {/* Header */}
-        <div className="flex items-start gap-3 px-5 py-4 border-b border-border/50">
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2 mb-1">
-              <Zap size={16} className="text-primary shrink-0" fill="currentColor" />
-              <h2 className="text-base font-bold text-foreground leading-tight">{club.name}</h2>
-            </div>
-            <div className="flex items-center flex-wrap gap-2">
-              <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border ${flashColor}`}>
+        <div className="flex items-start justify-between gap-4 px-5 pb-4 pt-5 sm:px-6">
+          <div className="min-w-0">
+            <h2 className="truncate text-2xl font-bold text-white">
+              {club.name}
+            </h2>
+
+            <div className="mt-3 flex flex-wrap items-center gap-2">
+              <span
+                className={`inline-flex rounded-full border px-2.5 py-1 text-xs font-medium ${flashTypeClass}`}
+              >
                 {club.flashType}
               </span>
-              <span className="flex items-center gap-1 text-xs text-yellow-400 font-semibold">
-                <Star size={11} fill="currentColor" />
+
+              <span className="inline-flex items-center gap-1 rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-xs text-[#dce9ff]">
+                <Star size={12} className="fill-[#71c7ff] text-[#71c7ff]" />
                 {club.avgRating.toFixed(1)}
               </span>
-              <span className="flex items-center gap-1 text-xs text-primary font-semibold">
-                <Hash size={11} />
+
+              <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-xs text-[#dce9ff]">
                 {club.avgPrice} avg
               </span>
             </div>
           </div>
+
           <button
             onClick={onClose}
-            aria-label="Close"
-            className="shrink-0 p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
+            className="rounded-xl border border-white/10 bg-white/5 p-2 text-[#dce9ff] transition hover:bg-white/10"
+            aria-label="Close details"
           >
-            <X size={16} />
+            <X size={18} />
           </button>
         </div>
 
-        {/* Scrollable body */}
-        <div className="overflow-y-auto flex-1 px-5 py-4">
-          {/* Quick Link */}
+        <div className="overflow-y-auto px-5 pb-5 sm:px-6 sm:pb-6">
           {club.quickLink && (
-            <div className="flex items-center gap-2 mb-4 p-3 rounded-xl bg-accent/10 border border-accent/30">
-              <span className="flex-1 text-sm font-medium text-foreground truncate">{club.quickLink}</span>
-              <button
-                onClick={handleCopy}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-accent/20 text-accent text-xs font-semibold hover:bg-accent/30 transition-all duration-150 shrink-0"
-              >
-                {copied ? <Check size={12} /> : <Copy size={12} />}
-                {copied ? "Copied" : "Copy"}
-              </button>
+            <div className="storm-panel-soft mb-4 rounded-2xl p-4">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <div className="min-w-0">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-[#8f9bbb]">
+                    Quick Link
+                  </p>
+                  <p className="mt-1 truncate text-sm text-[#dce9ff]">
+                    {club.quickLink}
+                  </p>
+                </div>
+
+                <button
+                  onClick={handleCopy}
+                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-[#71c7ff]/20 bg-[#71c7ff]/10 px-3 py-2 text-sm font-medium text-[#d8eeff] transition hover:border-[#71c7ff]/35 hover:bg-[#71c7ff]/14"
+                >
+                  {copied ? <Check size={15} /> : <Link2 size={15} />}
+                  {copied ? "Copied" : "Copy link"}
+                </button>
+              </div>
             </div>
           )}
 
-          {/* Details section */}
-          <div className="mb-4">
-            <DetailRow icon={<Calendar size={14} />} label="Club Age">
-              {club.clubAge}
-            </DetailRow>
-            <DetailRow icon={<Timer size={14} />} label="Avg Flash Length">
-              {club.avgFlashLength}
-            </DetailRow>
-            <DetailRow icon={<Hash size={14} />} label="Avg Price">
-              {club.avgPrice}
-            </DetailRow>
-            <DetailRow icon={<Clock size={14} />} label="SFW Status">
-              <div className="flex items-center gap-2 flex-wrap">
-                {club.sfwFriendly ? (
-                  <span className="px-2 py-0.5 text-[11px] font-medium rounded bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
-                    SFW Friendly
-                  </span>
-                ) : (
-                  <span className="px-2 py-0.5 text-[11px] font-medium rounded bg-muted text-muted-foreground border border-border">
-                    Not SFW Friendly
-                  </span>
-                )}
-                {club.sfwActive ? (
-                  <span className="px-2 py-0.5 text-[11px] font-medium rounded bg-teal-500/15 text-teal-400 border border-teal-500/30">
-                    SFW Active
-                  </span>
-                ) : (
-                  <span className="px-2 py-0.5 text-[11px] font-medium rounded bg-muted text-muted-foreground border border-border">
-                    Not SFW Active
-                  </span>
-                )}
-              </div>
-            </DetailRow>
-          </div>
+          <div className="grid gap-4 lg:grid-cols-2">
+            <div className="storm-panel-soft rounded-2xl p-4">
+              <h3 className="mb-4 text-sm font-semibold uppercase tracking-wide text-[#cfe3ff]">
+                Core Stats
+              </h3>
 
-          {/* Performance stats */}
-          <div className="glass-panel rounded-xl px-4 py-3 mb-4">
-            <h3 className="text-[10px] uppercase tracking-widest text-muted-foreground font-semibold mb-3">
-              Performance Stats
-            </h3>
-            <div className="flex flex-col gap-3">
-              <div>
-                <div className="flex items-center gap-2 mb-1.5">
-                  <Wind size={12} className="text-primary" />
-                  <span className="text-xs text-muted-foreground">Inv Speed</span>
-                </div>
-                <StatBar value={club.invSpeed} color="primary" />
+              <div className="space-y-3">
+                <DetailRow icon={<Timer size={16} />} label="Avg Flash Length">
+                  {club.avgFlashLength}
+                </DetailRow>
+
+                <DetailRow icon={<Calendar size={16} />} label="Club Age">
+                  {club.clubAge}
+                </DetailRow>
+
+                <DetailRow icon={<Package size={16} />} label="Preparedness">
+                  <StatBar value={club.preparedness} />
+                </DetailRow>
+
+                <DetailRow icon={<Gauge size={16} />} label="Inv Speed">
+                  <StatBar value={club.invSpeed} />
+                </DetailRow>
+
+                <DetailRow icon={<Wind size={16} />} label="Yeet Speed">
+                  <StatBar value={club.yeetSpeed} />
+                </DetailRow>
               </div>
-              <div>
-                <div className="flex items-center gap-2 mb-1.5">
-                  <Gauge size={12} className="text-accent" />
-                  <span className="text-xs text-muted-foreground">Yeet Speed</span>
-                </div>
-                <StatBar value={club.yeetSpeed} color="accent" />
-              </div>
-              <div>
-                <div className="flex items-center gap-2 mb-1.5">
-                  <Package size={12} className="text-teal-400" />
-                  <span className="text-xs text-muted-foreground">Preparedness</span>
-                </div>
-                <StatBar value={club.preparedness} color="teal" />
-              </div>
-              <div>
-                <div className="flex items-center gap-2 mb-1.5">
-                  <Star size={12} className="text-yellow-400" />
-                  <span className="text-xs text-muted-foreground">Avg Rating</span>
-                </div>
-                <StatBar value={club.avgRating} max={5} color="yellow" />
+            </div>
+
+            <div className="storm-panel-soft rounded-2xl p-4">
+              <h3 className="mb-4 text-sm font-semibold uppercase tracking-wide text-[#cfe3ff]">
+                Details
+              </h3>
+
+              <div className="space-y-3">
+                <DetailRow icon={<Star size={16} />} label="Avg Rating">
+                  {club.avgRating.toFixed(1)}
+                </DetailRow>
+
+                <DetailRow icon={<Package size={16} />} label="Avg Price">
+                  {club.avgPrice}
+                </DetailRow>
+
+                <DetailRow icon={<Check size={16} />} label="SFW Friendly">
+                  {club.sfwFriendly ? "Yes" : "No"}
+                </DetailRow>
+
+                <DetailRow icon={<Check size={16} />} label="SFW Active">
+                  {club.sfwActive ? "Yes" : "No"}
+                </DetailRow>
+
+                <DetailRow icon={<MessageSquare size={16} />} label="Comments">
+                  <p className="whitespace-pre-wrap text-sm leading-relaxed text-[#dce9ff]">
+                    {club.comments || "No comments available."}
+                  </p>
+                </DetailRow>
               </div>
             </div>
           </div>
-
-          {/* Comments */}
-          <div className="glass-panel rounded-xl px-4 py-3">
-            <div className="flex items-center gap-1.5 mb-2">
-              <MessageSquare size={13} className="text-muted-foreground" />
-              <span className="text-[10px] uppercase tracking-widest text-muted-foreground font-semibold">
-                Comments
-              </span>
-            </div>
-            <p className="text-sm text-foreground leading-relaxed whitespace-pre-wrap">{club.comments || "No comments available."}</p>
-          </div>
-        </div>
-
-        {/* Footer */}
-        <div className="px-5 py-3 border-t border-border/50 flex justify-end">
-          <button
-            onClick={onClose}
-            className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-          >
-            Close
-          </button>
         </div>
       </div>
     </div>

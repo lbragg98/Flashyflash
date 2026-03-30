@@ -4,8 +4,13 @@ import { useState, useMemo, useEffect } from "react";
 import { Club } from "@/lib/clubs";
 import { ClubCard } from "@/components/club-card";
 import { ClubDetailModal } from "@/components/club-detail-modal";
-import { FilterBar, Filters, SortKey, DEFAULT_FILTERS } from "@/components/filter-bar";
-import { Search, Zap, CloudLightning } from "lucide-react";
+import {
+  FilterBar,
+  Filters,
+  SortKey,
+  DEFAULT_FILTERS,
+} from "@/components/filter-bar";
+import { Search, Zap } from "lucide-react";
 
 export default function Home() {
   const [clubs, setClubs] = useState<Club[]>([]);
@@ -40,20 +45,27 @@ export default function Home() {
   const filtered = useMemo(() => {
     let result = clubs;
 
-    // Search
     if (search.trim()) {
       const q = search.toLowerCase();
       result = result.filter((c) => c.name.toLowerCase().includes(q));
     }
 
-    // Filters
-    if (filters.sfwFriendly !== null) result = result.filter((c) => c.sfwFriendly === filters.sfwFriendly);
-    if (filters.sfwActive !== null) result = result.filter((c) => c.sfwActive === filters.sfwActive);
-    if (filters.flashType !== null) result = result.filter((c) => c.flashType === filters.flashType);
+    if (filters.sfwFriendly !== null) {
+      result = result.filter((c) => c.sfwFriendly === filters.sfwFriendly);
+    }
+
+    if (filters.sfwActive !== null) {
+      result = result.filter((c) => c.sfwActive === filters.sfwActive);
+    }
+
+    if (filters.flashType !== null) {
+      result = result.filter((c) => c.flashType === filters.flashType);
+    }
+
     result = result.filter((c) => c.avgRating >= filters.ratingMin);
 
-    // Sort
     const sorted = [...result];
+
     switch (sort) {
       case "rating-desc":
         sorted.sort((a, b) => b.avgRating - a.avgRating);
@@ -80,73 +92,51 @@ export default function Home() {
         sorted.sort((a, b) => a.name.localeCompare(b.name));
         break;
     }
+
     return sorted;
   }, [clubs, search, filters, sort]);
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Subtle storm radial gradient overlay */}
-      <div
-        className="pointer-events-none fixed inset-0 z-0"
-        aria-hidden="true"
-        style={{
-          background:
-            "radial-gradient(ellipse 80% 40% at 50% 0%, oklch(0.55 0.28 285 / 0.08) 0%, transparent 70%), radial-gradient(ellipse 60% 30% at 20% 100%, oklch(0.65 0.22 265 / 0.06) 0%, transparent 70%)",
-        }}
-      />
-
-      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
-        {/* Header */}
-        <header className="mb-8 sm:mb-10 text-center">
-          <div className="flex items-center justify-center gap-2 mb-3">
-            <CloudLightning
-              size={28}
-              className="text-primary animate-lightning"
-              fill="oklch(0.65 0.22 265 / 0.15)"
-            />
-            <h1 className="text-3xl sm:text-4xl font-bold text-balance tracking-tight bg-clip-text">
-              <span className="text-foreground">Flash</span>
-              <span
-                style={{
-                  color: "oklch(0.72 0.22 265)",
-                  textShadow: "0 0 20px oklch(0.65 0.22 265 / 0.5)",
-                }}
-              >
-                Hub
-              </span>
+    <div className="min-h-screen">
+      <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-12">
+        <header className="mb-10 text-center sm:mb-14">
+          <div className="mb-4 inline-flex items-center justify-center gap-3">
+            <div className="h-px w-10 storm-divider" />
+            <h1 className="storm-text-glow text-4xl font-black tracking-tight sm:text-5xl">
+              <span className="text-white">Flash</span>
+              <span className="text-[#71c7ff]">Hub</span>
             </h1>
-            <CloudLightning
-              size={28}
-              className="text-accent animate-lightning"
-              fill="oklch(0.55 0.28 285 / 0.15)"
-              style={{ animationDelay: "1.5s" }}
-            />
+            <div className="h-px w-10 storm-divider" />
           </div>
-          <p className="text-muted-foreground text-sm sm:text-base max-w-md mx-auto text-balance leading-relaxed">
+
+          <p className="mx-auto mb-6 max-w-xl text-sm leading-relaxed text-[#9ea9c5] sm:text-base">
             Discover. Compare. Flash.
           </p>
-          <div className="lightning-divider max-w-xs mx-auto mt-4" />
+
+          <div className="mx-auto h-px max-w-xs storm-divider" />
         </header>
 
-        {/* Search */}
-        <div className="mb-4 relative">
-          <label htmlFor="search" className="sr-only">Search clubs</label>
-          <Search
-            size={16}
-            className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none"
-          />
-          <input
-            id="search"
-            type="search"
-            placeholder="Search clubs..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-10 pr-4 py-3 rounded-xl bg-secondary border border-border text-foreground placeholder:text-muted-foreground text-sm focus:outline-none focus:ring-2 focus:ring-ring focus:border-primary transition-all"
-          />
+        <div className="mb-6">
+          <label htmlFor="search" className="sr-only">
+            Search clubs
+          </label>
+          <div className="storm-panel-soft relative rounded-2xl p-2">
+            <Search
+              size={16}
+              className="pointer-events-none absolute left-6 top-1/2 -translate-y-1/2 text-[#7f8cac]"
+            />
+            <input
+              id="search"
+              type="search"
+              placeholder="Search clubs..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="storm-input w-full rounded-xl py-3 pl-10 pr-4 text-sm sm:text-base"
+            />
+          </div>
         </div>
 
-        {/* Filter bar */}
-        <div className="mb-6">
+        <div className="mb-8">
           <FilterBar
             filters={filters}
             sort={sort}
@@ -156,57 +146,56 @@ export default function Home() {
           />
         </div>
 
-        {/* Grid */}
         {loading ? (
-          <main className="flex flex-col items-center justify-center py-24 gap-3">
-            <div className="w-8 h-8 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
-            <p className="text-muted-foreground text-sm">Loading clubs...</p>
+          <main className="flex flex-col items-center justify-center gap-4 py-28 text-center">
+            <div className="h-10 w-10 animate-spin rounded-full border-2 border-[#71c7ff]/20 border-t-[#71c7ff]" />
+            <p className="text-sm text-[#9ea9c5]">Loading clubs...</p>
           </main>
         ) : error ? (
-          <main className="flex flex-col items-center justify-center py-24 gap-3 text-center">
-            <Zap size={36} className="text-destructive/30" />
-            <p className="text-destructive text-sm">{error}</p>
+          <main className="storm-panel flex flex-col items-center justify-center gap-4 rounded-3xl px-6 py-20 text-center">
+            <Zap size={40} className="text-rose-400/40" />
+            <p className="text-sm text-rose-300">{error}</p>
             <button
               onClick={() => window.location.reload()}
-              className="text-xs text-primary hover:underline"
+              className="text-sm font-medium text-[#71c7ff] transition hover:text-[#a7dcff]"
             >
               Try again
             </button>
           </main>
         ) : filtered.length > 0 ? (
           <main>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {filtered.map((club) => (
                 <ClubCard key={club.id} club={club} onSelect={setSelected} />
               ))}
             </div>
           </main>
         ) : (
-          <main className="flex flex-col items-center justify-center py-24 gap-3 text-center">
-            <Zap size={36} className="text-muted-foreground/30" />
-            <p className="text-muted-foreground text-sm">No clubs match your current filters.</p>
+          <main className="storm-panel flex flex-col items-center justify-center gap-4 rounded-3xl px-6 py-20 text-center">
+            <Zap size={40} className="text-[#7f8cac]/40" />
+            <p className="text-sm text-[#9ea9c5]">
+              No clubs match your current filters.
+            </p>
             <button
               onClick={() => {
                 setSearch("");
                 setFilters(DEFAULT_FILTERS);
               }}
-              className="text-xs text-primary hover:underline"
+              className="text-sm font-medium text-[#71c7ff] transition hover:text-[#a7dcff]"
             >
               Clear search &amp; filters
             </button>
           </main>
         )}
 
-        {/* Footer */}
-        <footer className="mt-12 text-center">
-          <div className="lightning-divider max-w-xs mx-auto mb-4" />
-          <p className="text-[11px] text-muted-foreground">
+        <footer className="mt-16 text-center">
+          <div className="mx-auto mb-4 h-px max-w-xs storm-divider" />
+          <p className="text-xs text-[#7f8cac]">
             {clubs.length} clubs in the directory
           </p>
         </footer>
       </div>
 
-      {/* Detail Modal */}
       <ClubDetailModal club={selected} onClose={() => setSelected(null)} />
     </div>
   );
