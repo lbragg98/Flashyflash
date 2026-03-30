@@ -46,6 +46,20 @@ export default function RootLayout({
           <div className="storm-mist" />
           <div className="lightning-flash-bg" />
           <div className="ambient-glow" />
+          
+          {/* Rain streaks */}
+          {[...Array(6)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute w-px bg-gradient-to-b from-transparent via-blue-300/30 to-transparent pointer-events-none"
+              style={{
+                height: '100vh',
+                left: `${Math.random() * 100}%`,
+                animation: `rain-fall ${2 + Math.random() * 1.5}s linear infinite`,
+                animationDelay: `${Math.random() * 2}s`,
+              }}
+            />
+          ))}
         </div>
 
         {/* Content above background */}

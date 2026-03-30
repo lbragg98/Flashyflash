@@ -136,7 +136,7 @@
 .cloud-layer-1 {
   width: 600px;
   height: 300px;
-  background: radial-gradient(ellipse at center, oklch(0.2 0.01 255 / 0.4), transparent);
+  background: radial-gradient(ellipse at center, oklch(0.3 0.02 255 / 0.7), transparent);
   top: 5%;
   left: -10%;
   animation: drift-cloud-slow 25s ease-in-out infinite;
@@ -145,7 +145,7 @@
 .cloud-layer-2 {
   width: 700px;
   height: 350px;
-  background: radial-gradient(ellipse at center, oklch(0.15 0.008 260 / 0.3), transparent);
+  background: radial-gradient(ellipse at center, oklch(0.25 0.015 260 / 0.6), transparent);
   top: 25%;
   right: -15%;
   animation: drift-cloud-slower 35s ease-in-out infinite;
@@ -154,7 +154,7 @@
 .cloud-layer-3 {
   width: 500px;
   height: 250px;
-  background: radial-gradient(ellipse at center, oklch(0.18 0.01 255 / 0.35), transparent);
+  background: radial-gradient(ellipse at center, oklch(0.28 0.018 255 / 0.65), transparent);
   bottom: 20%;
   left: 10%;
   animation: drift-cloud-slow 30s ease-in-out infinite reverse;
@@ -163,7 +163,7 @@
 .storm-mist {
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse at 50% 100%, oklch(0.12 0.01 265 / 0.1), transparent);
+  background: radial-gradient(ellipse at 50% 100%, oklch(0.12 0.01 265 / 0.25), transparent);
   animation: drift-mist 20s ease-in-out infinite;
 }
 
@@ -172,9 +172,9 @@
   inset: 0;
   background: linear-gradient(135deg, 
     oklch(0.65 0.22 265 / 0) 0%,
-    oklch(0.65 0.22 265 / 0.08) 30%,
-    oklch(0.65 0.22 265 / 0.12) 50%,
-    oklch(0.65 0.22 265 / 0.08) 70%,
+    oklch(0.65 0.22 265 / 0.25) 30%,
+    oklch(0.65 0.22 265 / 0.35) 50%,
+    oklch(0.65 0.22 265 / 0.25) 70%,
     oklch(0.65 0.22 265 / 0) 100%);
   animation: background-lightning-flash 12s ease-in-out infinite 2s;
   pointer-events: none;
@@ -183,7 +183,7 @@
 .ambient-glow {
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse at 50% 30%, oklch(0.65 0.22 265 / 0.05), transparent);
+  background: radial-gradient(ellipse at 50% 30%, oklch(0.65 0.22 265 / 0.15), transparent);
   animation: subtle-ambient-pulse 8s ease-in-out infinite;
 }
 
@@ -224,8 +224,15 @@
 }
 
 @keyframes subtle-ambient-pulse {
-  0%, 100% { opacity: 0.08; }
-  50% { opacity: 0.12; }
+  0%, 100% { opacity: 0.15; }
+  50% { opacity: 0.25; }
+}
+
+@keyframes rain-fall {
+  0% { transform: translateY(-100%); opacity: 0; }
+  10% { opacity: 0.3; }
+  90% { opacity: 0.3; }
+  100% { transform: translateY(100vh); opacity: 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {
