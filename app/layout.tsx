@@ -43,10 +43,29 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
-      <body className={`${geist.variable} ${geistMono.variable} font-sans antialiased`}>
-        <div className="storm-shell min-h-screen">
-          {children}
-          <Analytics />
+      <body className={`${geist.variable} ${geistMono.variable} font-sans antialiased bg-background text-foreground`}>
+        <div className="min-h-screen">
+          {/* Cinematic Storm Background */}
+          <div className="storm-background">
+            <div className="sky-base" />
+            <div className="sky-glow" />
+            
+            <div className="cloud-container">
+              <div className="cloud-1" />
+              <div className="cloud-2" />
+              <div className="cloud-3" />
+            </div>
+            
+            <div className="lightning-flash" />
+            <div className="lightning-secondary" />
+            <div className="mist-layer" />
+          </div>
+
+          {/* Page Content */}
+          <div className="content-wrapper relative z-10">
+            {children}
+            <Analytics />
+          </div>
         </div>
       </body>
     </html>
