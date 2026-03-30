@@ -6,39 +6,37 @@ import { useState } from "react";
 
 export type SortKey =
   | "rating-desc"
+  | "rating-asc"
   | "price-asc"
   | "price-desc"
-  | "age-desc"
+  | "invSpeed-desc"
+  | "yeetSpeed-desc"
+  | "preparedness-desc"
   | "name-asc";
 
 export interface Filters {
   sfwFriendly: boolean | null;
   sfwActive: boolean | null;
   flashType: FlashType | null;
-  priceMin: number;
-  priceMax: number;
   ratingMin: number;
-  ageMin: number;
-  ageMax: number;
 }
 
 export const DEFAULT_FILTERS: Filters = {
   sfwFriendly: null,
   sfwActive: null,
   flashType: null,
-  priceMin: 0,
-  priceMax: 999,
   ratingMin: 0,
-  ageMin: 0,
-  ageMax: 99,
 };
 
-const FLASH_TYPES: FlashType[] = ["Sheet", "Custom", "Guest", "Hybrid", "Walk-In"];
+const FLASH_TYPES: FlashType[] = ["Dog", "Cat", "Invites", "Hybrid"];
 const SORT_OPTIONS: { value: SortKey; label: string }[] = [
   { value: "rating-desc", label: "Rating: High to Low" },
+  { value: "rating-asc", label: "Rating: Low to High" },
   { value: "price-asc", label: "Price: Low to High" },
   { value: "price-desc", label: "Price: High to Low" },
-  { value: "age-desc", label: "Club Age: Oldest First" },
+  { value: "invSpeed-desc", label: "Inv Speed: Fastest" },
+  { value: "yeetSpeed-desc", label: "Yeet Speed: Fastest" },
+  { value: "preparedness-desc", label: "Preparedness: Highest" },
   { value: "name-asc", label: "Name: A to Z" },
 ];
 
@@ -86,11 +84,7 @@ export function FilterBar({
     filters.sfwFriendly !== null ||
     filters.sfwActive !== null ||
     filters.flashType !== null ||
-    filters.priceMax < 999 ||
-    filters.priceMin > 0 ||
-    filters.ratingMin > 0 ||
-    filters.ageMin > 0 ||
-    filters.ageMax < 99;
+    filters.ratingMin > 0;
 
   const reset = () => onFiltersChange(DEFAULT_FILTERS);
 
@@ -207,40 +201,6 @@ export function FilterBar({
             </div>
           </div>
 
-          {/* Price Range */}
-          <div className="flex flex-wrap items-center gap-3">
-            <span className="text-xs text-muted-foreground w-24 shrink-0">Price Range</span>
-            <div className="flex items-center gap-2">
-              <label className="sr-only" htmlFor="price-min">Min price</label>
-              <input
-                id="price-min"
-                type="number"
-                min={0}
-                max={999}
-                value={filters.priceMin}
-                onChange={(e) =>
-                  onFiltersChange({ ...filters, priceMin: Number(e.target.value) })
-                }
-                className="w-20 text-xs bg-secondary border border-border rounded-lg px-2 py-1.5 text-foreground focus:outline-none focus:ring-1 focus:ring-ring"
-                placeholder="$0"
-              />
-              <span className="text-muted-foreground text-xs">—</span>
-              <label className="sr-only" htmlFor="price-max">Max price</label>
-              <input
-                id="price-max"
-                type="number"
-                min={0}
-                max={999}
-                value={filters.priceMax}
-                onChange={(e) =>
-                  onFiltersChange({ ...filters, priceMax: Number(e.target.value) })
-                }
-                className="w-20 text-xs bg-secondary border border-border rounded-lg px-2 py-1.5 text-foreground focus:outline-none focus:ring-1 focus:ring-ring"
-                placeholder="$999"
-              />
-            </div>
-          </div>
-
           {/* Rating Min */}
           <div className="flex flex-wrap items-center gap-3">
             <span className="text-xs text-muted-foreground w-24 shrink-0">Min Rating</span>
@@ -257,34 +217,6 @@ export function FilterBar({
                   }
                 >
                   {r === 0 ? "Any" : `${r}+`}
-                </ToggleChip>
-              ))}
-            </div>
-          </div>
-
-          {/* Club Age */}
-          <div className="flex flex-wrap items-center gap-3">
-            <span className="text-xs text-muted-foreground w-24 shrink-0">Club Age</span>
-            <div className="flex gap-1.5 flex-wrap">
-              {[
-                { label: "Any", min: 0, max: 99 },
-                { label: "< 2 yrs", min: 0, max: 2 },
-                { label: "2–5 yrs", min: 2, max: 5 },
-                { label: "5–10 yrs", min: 5, max: 10 },
-                { label: "10+ yrs", min: 10, max: 99 },
-              ].map((a) => (
-                <ToggleChip
-                  key={a.label}
-                  active={filters.ageMin === a.min && filters.ageMax === a.max}
-                  onClick={() =>
-                    onFiltersChange(
-                      filters.ageMin === a.min && filters.ageMax === a.max
-                        ? { ...filters, ageMin: 0, ageMax: 99 }
-                        : { ...filters, ageMin: a.min, ageMax: a.max }
-                    )
-                  }
-                >
-                  {a.label}
                 </ToggleChip>
               ))}
             </div>

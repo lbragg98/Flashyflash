@@ -1,7 +1,8 @@
 "use client";
 
 import { Club } from "@/lib/clubs";
-import { ExternalLink, Star, Zap, Clock, DollarSign, Shield, ShieldOff } from "lucide-react";
+import { Copy, Star, Zap, Clock, Hash, Check } from "lucide-react";
+import { useState } from "react";
 
 interface ClubCardProps {
   club: Club;
@@ -9,11 +10,10 @@ interface ClubCardProps {
 }
 
 const FLASH_TYPE_COLORS: Record<string, string> = {
-  Sheet: "text-primary bg-primary/10 border-primary/30",
-  Custom: "text-accent bg-accent/10 border-accent/30",
-  Guest: "text-yellow-400 bg-yellow-400/10 border-yellow-400/30",
+  Dog: "text-primary bg-primary/10 border-primary/30",
+  Cat: "text-accent bg-accent/10 border-accent/30",
+  Invites: "text-yellow-400 bg-yellow-400/10 border-yellow-400/30",
   Hybrid: "text-teal-400 bg-teal-400/10 border-teal-400/30",
-  "Walk-In": "text-orange-400 bg-orange-400/10 border-orange-400/30",
 };
 
 function StarRating({ rating }: { rating: number }) {
@@ -50,7 +50,17 @@ function StarRating({ rating }: { rating: number }) {
 }
 
 export function ClubCard({ club, onSelect }: ClubCardProps) {
+  const [copied, setCopied] = useState(false);
   const flashColorClass = FLASH_TYPE_COLORS[club.flashType] ?? "text-foreground bg-secondary border-border";
+
+  const handleCopy = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (club.quickLink) {
+      await navigator.clipboard.writeText(club.quickLink);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    }
+  };
 
   return (
     <article
@@ -88,23 +98,25 @@ export function ClubCard({ club, onSelect }: ClubCardProps) {
           <StarRating rating={club.avgRating} />
         </div>
         <div className="flex items-center gap-1.5">
-          <DollarSign size={11} className="text-primary shrink-0" />
-          <span className="text-foreground font-medium">${club.avgPrice}</span>
+          <Hash size={11} className="text-primary shrink-0" />
+          <span className="text-foreground font-medium">{club.avgPrice}</span>
           <span className="text-muted-foreground">avg</span>
         </div>
         <div className="flex items-center gap-1.5">
           <Clock size={11} className="text-muted-foreground shrink-0" />
-          <span>{club.clubAge}yr old</span>
+          <span>{club.clubAge} old</span>
         </div>
-        <div className="flex items-center gap-1.5">
-          {club.sfwActive ? (
-            <Shield size={11} className="text-emerald-400 shrink-0" />
-          ) : (
-            <ShieldOff size={11} className="text-muted-foreground/50 shrink-0" />
+        <div className="flex items-center gap-1.5 flex-wrap">
+          {club.sfwFriendly && (
+            <span className="px-1.5 py-0.5 text-[10px] font-medium rounded bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+              SFW Friendly
+            </span>
           )}
-          <span className={club.sfwActive ? "text-emerald-400" : "text-muted-foreground"}>
-            SFW {club.sfwActive ? "Active" : "Inactive"}
-          </span>
+          {club.sfwActive && (
+            <span className="px-1.5 py-0.5 text-[10px] font-medium rounded bg-teal-500/15 text-teal-400 border border-teal-500/30">
+              SFW Active
+            </span>
+          )}
         </div>
       </div>
 
@@ -117,16 +129,14 @@ export function ClubCard({ club, onSelect }: ClubCardProps) {
           View Details
         </button>
         {club.quickLink && (
-          <a
-            href={club.quickLink}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={`Quick link for ${club.name}`}
-            className="flex items-center justify-center p-1.5 rounded-lg bg-accent/10 text-accent border border-accent/20 hover:bg-accent/20 transition-all duration-150 shrink-0"
-            onClick={(e) => e.stopPropagation()}
+          <button
+            onClick={handleCopy}
+            aria-label={`Copy quick link for ${club.name}`}
+            className="flex items-center gap-1.5 px-2 py-1.5 rounded-lg bg-accent/10 text-accent border border-accent/20 hover:bg-accent/20 transition-all duration-150 shrink-0 text-xs"
           >
-            <ExternalLink size={12} />
-          </a>
+            {copied ? <Check size={12} /> : <Copy size={12} />}
+            <span className="hidden sm:inline">{copied ? "Copied" : "Copy"}</span>
+          </button>
         )}
       </div>
     </article>

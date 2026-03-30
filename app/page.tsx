@@ -26,11 +26,7 @@ export default function Home() {
     if (filters.sfwFriendly !== null) clubs = clubs.filter((c) => c.sfwFriendly === filters.sfwFriendly);
     if (filters.sfwActive !== null) clubs = clubs.filter((c) => c.sfwActive === filters.sfwActive);
     if (filters.flashType !== null) clubs = clubs.filter((c) => c.flashType === filters.flashType);
-    clubs = clubs.filter(
-      (c) => c.avgPrice >= filters.priceMin && c.avgPrice <= filters.priceMax
-    );
     clubs = clubs.filter((c) => c.avgRating >= filters.ratingMin);
-    clubs = clubs.filter((c) => c.clubAge >= filters.ageMin && c.clubAge <= filters.ageMax);
 
     // Sort
     const sorted = [...clubs];
@@ -38,14 +34,23 @@ export default function Home() {
       case "rating-desc":
         sorted.sort((a, b) => b.avgRating - a.avgRating);
         break;
+      case "rating-asc":
+        sorted.sort((a, b) => a.avgRating - b.avgRating);
+        break;
       case "price-asc":
         sorted.sort((a, b) => a.avgPrice - b.avgPrice);
         break;
       case "price-desc":
         sorted.sort((a, b) => b.avgPrice - a.avgPrice);
         break;
-      case "age-desc":
-        sorted.sort((a, b) => b.clubAge - a.clubAge);
+      case "invSpeed-desc":
+        sorted.sort((a, b) => b.invSpeed - a.invSpeed);
+        break;
+      case "yeetSpeed-desc":
+        sorted.sort((a, b) => b.yeetSpeed - a.yeetSpeed);
+        break;
+      case "preparedness-desc":
+        sorted.sort((a, b) => b.preparedness - a.preparedness);
         break;
       case "name-asc":
         sorted.sort((a, b) => a.name.localeCompare(b.name));

@@ -1,16 +1,15 @@
 "use client";
 
 import { Club } from "@/lib/clubs";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   X,
-  ExternalLink,
+  Copy,
+  Check,
   Star,
-  DollarSign,
+  Hash,
   Clock,
   Zap,
-  Shield,
-  ShieldOff,
   MessageSquare,
   Gauge,
   Wind,
@@ -70,14 +69,23 @@ function DetailRow({
 }
 
 const FLASH_TYPE_COLORS: Record<string, string> = {
-  Sheet: "text-primary border-primary/40 bg-primary/10",
-  Custom: "text-accent border-accent/40 bg-accent/10",
-  Guest: "text-yellow-400 border-yellow-400/40 bg-yellow-400/10",
+  Dog: "text-primary border-primary/40 bg-primary/10",
+  Cat: "text-accent border-accent/40 bg-accent/10",
+  Invites: "text-yellow-400 border-yellow-400/40 bg-yellow-400/10",
   Hybrid: "text-teal-400 border-teal-400/40 bg-teal-400/10",
-  "Walk-In": "text-orange-400 border-orange-400/40 bg-orange-400/10",
 };
 
 export function ClubDetailModal({ club, onClose }: ClubDetailModalProps) {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = async () => {
+    if (club?.quickLink) {
+      await navigator.clipboard.writeText(club.quickLink);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    }
+  };
+
   useEffect(() => {
     if (!club) return;
     const handler = (e: KeyboardEvent) => {
@@ -130,7 +138,7 @@ export function ClubDetailModal({ club, onClose }: ClubDetailModalProps) {
                 {club.avgRating.toFixed(1)}
               </span>
               <span className="flex items-center gap-1 text-xs text-primary font-semibold">
-                <DollarSign size={11} />
+                <Hash size={11} />
                 {club.avgPrice} avg
               </span>
             </div>
@@ -148,40 +156,50 @@ export function ClubDetailModal({ club, onClose }: ClubDetailModalProps) {
         <div className="overflow-y-auto flex-1 px-5 py-4">
           {/* Quick Link */}
           {club.quickLink && (
-            <a
-              href={club.quickLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 w-full mb-4 py-2.5 rounded-xl bg-accent/10 border border-accent/30 text-accent text-sm font-semibold hover:bg-accent/20 transition-all duration-150 animate-pulse-glow"
-            >
-              <ExternalLink size={14} />
-              Quick Link
-            </a>
+            <div className="flex items-center gap-2 mb-4 p-3 rounded-xl bg-accent/10 border border-accent/30">
+              <span className="flex-1 text-sm font-medium text-foreground truncate">{club.quickLink}</span>
+              <button
+                onClick={handleCopy}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-accent/20 text-accent text-xs font-semibold hover:bg-accent/30 transition-all duration-150 shrink-0"
+              >
+                {copied ? <Check size={12} /> : <Copy size={12} />}
+                {copied ? "Copied" : "Copy"}
+              </button>
+            </div>
           )}
 
           {/* Details section */}
           <div className="mb-4">
             <DetailRow icon={<Calendar size={14} />} label="Club Age">
-              {club.clubAge} year{club.clubAge !== 1 ? "s" : ""} old
+              {club.clubAge}
             </DetailRow>
             <DetailRow icon={<Timer size={14} />} label="Avg Flash Length">
-              {club.avgFlashLength} minutes
+              {club.avgFlashLength}
             </DetailRow>
-            <DetailRow icon={<DollarSign size={14} />} label="Avg Price">
-              ${club.avgPrice}
+            <DetailRow icon={<Hash size={14} />} label="Avg Price">
+              {club.avgPrice}
             </DetailRow>
-            <DetailRow icon={<Shield size={14} />} label="SFW Friendly">
-              <span className={club.sfwFriendly ? "text-emerald-400" : "text-muted-foreground"}>
-                {club.sfwFriendly ? "Yes" : "No"}
-              </span>
-            </DetailRow>
-            <DetailRow
-              icon={club.sfwActive ? <Shield size={14} /> : <ShieldOff size={14} />}
-              label="SFW Active"
-            >
-              <span className={club.sfwActive ? "text-emerald-400" : "text-muted-foreground"}>
-                {club.sfwActive ? "Yes" : "No"}
-              </span>
+            <DetailRow icon={<Clock size={14} />} label="SFW Status">
+              <div className="flex items-center gap-2 flex-wrap">
+                {club.sfwFriendly ? (
+                  <span className="px-2 py-0.5 text-[11px] font-medium rounded bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                    SFW Friendly
+                  </span>
+                ) : (
+                  <span className="px-2 py-0.5 text-[11px] font-medium rounded bg-muted text-muted-foreground border border-border">
+                    Not SFW Friendly
+                  </span>
+                )}
+                {club.sfwActive ? (
+                  <span className="px-2 py-0.5 text-[11px] font-medium rounded bg-teal-500/15 text-teal-400 border border-teal-500/30">
+                    SFW Active
+                  </span>
+                ) : (
+                  <span className="px-2 py-0.5 text-[11px] font-medium rounded bg-muted text-muted-foreground border border-border">
+                    Not SFW Active
+                  </span>
+                )}
+              </div>
             </DetailRow>
           </div>
 
@@ -223,14 +241,14 @@ export function ClubDetailModal({ club, onClose }: ClubDetailModalProps) {
           </div>
 
           {/* Comments */}
-          <div>
+          <div className="glass-panel rounded-xl px-4 py-3">
             <div className="flex items-center gap-1.5 mb-2">
               <MessageSquare size={13} className="text-muted-foreground" />
               <span className="text-[10px] uppercase tracking-widest text-muted-foreground font-semibold">
                 Comments
               </span>
             </div>
-            <p className="text-sm text-foreground leading-relaxed">{club.comments}</p>
+            <p className="text-sm text-foreground leading-relaxed whitespace-pre-wrap">{club.comments || "No comments available."}</p>
           </div>
         </div>
 
