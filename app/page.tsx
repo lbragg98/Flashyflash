@@ -120,7 +120,8 @@ export default function Home() {
         </div>
 
         {/* Filter bar */}
-        <div className="mb-8"
+        <div className="mb-8">
+          <FilterBar
             filters={filters}
             sort={sort}
             onFiltersChange={setFilters}

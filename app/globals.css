@@ -1,357 +1,138 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
+/* Storm theme for Club Directory */
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* Cinematic Thunder Storm Palette */
+  /* Dark storm base */
   --background: #050817;
   --foreground: #f0f4ff;
-  
+  --card: #0a0e20;
+  --card-foreground: #f0f4ff;
+  --popover: #0a0e20;
+  --popover-foreground: #f0f4ff;
   --primary: #00d4ff;
-  --primary-dark: #0099cc;
-  --primary-light: #4dffff;
-  
+  --primary-foreground: #050817;
+  --secondary: #1a1f35;
+  --secondary-foreground: #8a96b4;
+  --muted: #1a1f35;
+  --muted-foreground: #6b7793;
   --accent: #b366ff;
-  --accent-dark: #7a2fbf;
-  --accent-light: #d699ff;
-  
-  --surface-1: #0f1425;
-  --surface-2: #151d35;
-  --surface-3: #1a2447;
-  
-  --storm-gray: #6b7793;
-  --storm-light: #8a96b4;
+  --accent-foreground: #f0f4ff;
   --destructive: #ff3366;
-  
+  --destructive-foreground: #050817;
+  --border: #1a1f35;
+  --input: #0a0e20;
+  --ring: #00d4ff;
   --radius: 0.75rem;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  /* Core typography */
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Storm UI Components */
+  .storm-panel {
+    @apply bg-card border border-border rounded-xl p-4;
+  }
+
+  .storm-input {
+    @apply bg-input border border-border rounded-lg px-4 py-2.5 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all;
+  }
+
+  .storm-button {
+    @apply px-4 py-2 rounded-lg font-semibold transition-all;
+  }
+
+  .storm-divider {
+    @apply h-px bg-gradient-to-r from-transparent via-primary to-transparent;
+  }
+
+  .glass-panel {
+    @apply bg-card/80 backdrop-blur border border-border rounded-xl;
+  }
+
+  .glow-primary {
+    box-shadow: 0 0 16px rgb(0, 212, 255, 0.4);
+  }
+
+  .glow-accent {
+    box-shadow: 0 0 16px rgb(179, 102, 255, 0.4);
+  }
+}
+
+/* Background animations */
+@keyframes drift-slow {
+  0%, 100% { transform: translateX(0) translateY(0); }
+  33% { transform: translateX(30px) translateY(-15px); }
+  66% { transform: translateX(-25px) translateY(10px); }
+}
+
+@keyframes drift-slower {
+  0%, 100% { transform: translateX(0) translateY(0); }
+  33% { transform: translateX(-40px) translateY(20px); }
+  66% { transform: translateX(35px) translateY(-15px); }
+}
+
+@keyframes lightning-pulse {
+  0%, 8%, 10%, 12%, 16%, 18%, 100% { opacity: 0; }
+  9%, 11%, 17% { opacity: 1; }
+}
+
+@keyframes ambient-glow {
+  0%, 100% { opacity: 0.15; }
+  50% { opacity: 0.25; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cloud-layer-1,
+  .cloud-layer-2,
+  .cloud-layer-3,
+  .lightning-flash,
+  .lightning-secondary,
+  .mist-layer,
+  .ambient-glow {
+    animation: none;
+  }
+}
+
+.cloud-layer-1 {
+  animation: drift-slow 28s ease-in-out infinite;
+}
+
+.cloud-layer-2 {
+  animation: drift-slower 36s ease-in-out infinite;
+}
+
+.cloud-layer-3 {
+  animation: drift-slow 32s ease-in-out infinite reverse;
+}
+
+.lightning-flash {
+  animation: lightning-pulse 14s ease-in-out infinite 2s;
+}
+
+.lightning-secondary {
+  animation: lightning-pulse 14s ease-in-out infinite 3s;
+}
+
+.ambient-glow {
+  animation: ambient-glow 8s ease-in-out infinite;
 }
 
 @theme inline {
   --font-sans: 'Geist', 'Geist Fallback';
   --font-mono: 'Geist Mono', 'Geist Mono Fallback';
-}
-
-@layer base {
-  * {
-    @apply outline-ring/50;
-  }
-  
-  html {
-    scroll-behavior: smooth;
-  }
-  
-  body {
-    @apply bg-[#050817] text-[#f0f4ff];
-    background-attachment: fixed;
-  }
-}
-
-/* ============================================================
-   ANIMATIONS
-   ============================================================ */
-
-@keyframes sky-pulse {
-  0%, 100% { opacity: 0.3; }
-  50% { opacity: 0.5; }
-}
-
-@keyframes cloud-drift-slow {
-  0%, 100% { transform: translateX(0); }
-  50% { transform: translateX(40px); }
-}
-
-@keyframes cloud-drift-medium {
-  0%, 100% { transform: translateX(0); }
-  50% { transform: translateX(-50px); }
-}
-
-@keyframes cloud-drift-fast {
-  0%, 100% { transform: translateX(0); }
-  50% { transform: translateX(60px); }
-}
-
-@keyframes lightning-strike {
-  0%, 98%, 100% { opacity: 0; }
-  99% { opacity: 1; }
-}
-
-@keyframes lightning-secondary {
-  0%, 95%, 100% { opacity: 0; }
-  96%, 97% { opacity: 0.6; }
-  98% { opacity: 1; }
-}
-
-@keyframes glow-pulse {
-  0%, 100% { filter: drop-shadow(0 0 10px rgba(0, 212, 255, 0.3)); }
-  50% { filter: drop-shadow(0 0 30px rgba(0, 212, 255, 0.8)); }
-}
-
-@keyframes shimmer-electric {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-}
-
-@keyframes float-up {
-  0% { transform: translateY(0); opacity: 0; }
-  50% { opacity: 1; }
-  100% { transform: translateY(-60px); opacity: 0; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  * {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-}
-
-/* ============================================================
-   BACKGROUND SYSTEM
-   ============================================================ */
-
-.storm-background {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  overflow: hidden;
-}
-
-.sky-base {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    180deg,
-    #0a0e1a 0%,
-    #050817 30%,
-    #0f1425 60%,
-    #1a1f3a 100%
-  );
-}
-
-.sky-glow {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(
-    ellipse at 50% 20%,
-    rgba(0, 212, 255, 0.08) 0%,
-    transparent 60%
-  );
-  animation: sky-pulse 6s ease-in-out infinite;
-}
-
-.cloud-container {
-  position: absolute;
-  inset: 0;
-  opacity: 0.4;
-}
-
-.cloud-1 {
-  position: absolute;
-  width: 400px;
-  height: 200px;
-  background: linear-gradient(
-    135deg,
-    rgba(15, 20, 37, 0.8),
-    rgba(21, 29, 53, 0.6)
-  );
-  border-radius: 50%;
-  top: 10%;
-  left: 5%;
-  filter: blur(60px);
-  animation: cloud-drift-slow 40s ease-in-out infinite;
-}
-
-.cloud-2 {
-  position: absolute;
-  width: 500px;
-  height: 250px;
-  background: linear-gradient(
-    135deg,
-    rgba(26, 36, 71, 0.7),
-    rgba(15, 20, 37, 0.5)
-  );
-  border-radius: 50%;
-  top: 30%;
-  right: 10%;
-  filter: blur(70px);
-  animation: cloud-drift-medium 50s ease-in-out infinite reverse;
-}
-
-.cloud-3 {
-  position: absolute;
-  width: 350px;
-  height: 180px;
-  background: linear-gradient(
-    135deg,
-    rgba(21, 29, 53, 0.6),
-    rgba(10, 14, 26, 0.4)
-  );
-  border-radius: 50%;
-  bottom: 20%;
-  left: 20%;
-  filter: blur(50px);
-  animation: cloud-drift-fast 45s ease-in-out infinite;
-}
-
-.lightning-flash {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(0, 212, 255, 0.1) 25%,
-    rgba(179, 102, 255, 0.08) 50%,
-    rgba(0, 212, 255, 0.1) 75%,
-    transparent 100%
-  );
-  animation: lightning-strike 7s ease-in-out 2s infinite;
-}
-
-.lightning-secondary {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(
-    ellipse at 60% 40%,
-    rgba(179, 102, 255, 0.15) 0%,
-    transparent 50%
-  );
-  animation: lightning-secondary 7s ease-in-out 2s infinite;
-}
-
-.mist-layer {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(
-    ellipse at 50% 100%,
-    rgba(26, 36, 71, 0.3),
-    transparent 70%
-  );
-  pointer-events: none;
-}
-
-/* ============================================================
-   CONTENT WRAPPER
-   ============================================================ */
-
-.content-wrapper {
-  position: relative;
-  z-index: 10;
-}
-
-/* ============================================================
-   REUSABLE UI STYLES
-   ============================================================ */
-
-.storm-panel {
-  background: linear-gradient(
-    135deg,
-    rgba(21, 29, 53, 0.6),
-    rgba(15, 20, 37, 0.4)
-  );
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(0, 212, 255, 0.15);
-  border-radius: var(--radius);
-  box-shadow: 
-    0 8px 32px rgba(0, 0, 0, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.05);
-}
-
-.storm-panel-dark {
-  background: linear-gradient(
-    135deg,
-    rgba(15, 20, 37, 0.8),
-    rgba(10, 14, 26, 0.6)
-  );
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(0, 212, 255, 0.1);
-  border-radius: var(--radius);
-  box-shadow: 
-    0 12px 40px rgba(0, 0, 0, 0.5),
-    inset 0 1px 0 rgba(255, 255, 255, 0.03);
-}
-
-.storm-input {
-  @apply bg-[#0f1425] text-[#f0f4ff] border border-[#00d4ff]/20 rounded-lg px-3.5 py-2.5 text-sm;
-  @apply focus:outline-none focus:border-[#00d4ff]/50 focus:ring-1 focus:ring-[#00d4ff]/30;
-  @apply placeholder:text-[#6b7793] transition-all duration-200;
-  
-  background: linear-gradient(135deg, rgba(15, 20, 37, 0.6), rgba(21, 29, 53, 0.4));
-  backdrop-filter: blur(10px);
-}
-
-.storm-button {
-  @apply px-4 py-2.5 rounded-lg font-medium text-sm transition-all duration-200;
-  @apply bg-[#00d4ff] text-[#050817] hover:bg-[#4dffff] active:scale-95;
-  @apply shadow-lg hover:shadow-xl;
-  background: linear-gradient(135deg, #00d4ff, #0099cc);
-}
-
-.storm-button-outline {
-  @apply px-4 py-2.5 rounded-lg font-medium text-sm transition-all duration-200;
-  @apply border border-[#00d4ff]/40 text-[#00d4ff] hover:bg-[#00d4ff]/10;
-  @apply hover:border-[#00d4ff]/60;
-}
-
-.storm-button-secondary {
-  @apply px-4 py-2.5 rounded-lg font-medium text-sm transition-all duration-200;
-  @apply bg-[#b366ff]/20 text-[#d699ff] hover:bg-[#b366ff]/30;
-  @apply border border-[#b366ff]/30 hover:border-[#b366ff]/60;
-}
-
-.storm-badge {
-  @apply inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs font-semibold;
-  @apply bg-[#00d4ff]/15 text-[#4dffff] border border-[#00d4ff]/30;
-}
-
-.storm-badge-accent {
-  @apply inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs font-semibold;
-  @apply bg-[#b366ff]/15 text-[#d699ff] border border-[#b366ff]/30;
-}
-
-.storm-divider {
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(0, 212, 255, 0.3),
-    rgba(179, 102, 255, 0.2),
-    transparent
-  );
-}
-
-.shimmer-text {
-  background: linear-gradient(
-    90deg,
-    #f0f4ff,
-    #00d4ff,
-    #b366ff,
-    #f0f4ff
-  );
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: shimmer-electric 3s linear infinite;
-}
-
-.glow-electric-blue {
-  filter: drop-shadow(0 0 12px rgba(0, 212, 255, 0.5));
-}
-
-.glow-electric-violet {
-  filter: drop-shadow(0 0 12px rgba(179, 102, 255, 0.5));
-}
-
-.shadow-storm {
-  box-shadow: 
-    0 4px 24px rgba(0, 0, 0, 0.4),
-    0 0 1px rgba(0, 212, 255, 0.1) inset;
-}
-
-.shadow-storm-lg {
-  box-shadow: 
-    0 20px 60px rgba(0, 0, 0, 0.6),
-    0 0 2px rgba(0, 212, 255, 0.15) inset;
 }
