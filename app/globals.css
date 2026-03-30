@@ -1,0 +1,129 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* Storm theme — always dark */
+  --background: oklch(0.1 0.015 255);
+  --foreground: oklch(0.94 0.01 240);
+  --card: oklch(0.14 0.02 255);
+  --card-foreground: oklch(0.94 0.01 240);
+  --popover: oklch(0.12 0.02 255);
+  --popover-foreground: oklch(0.94 0.01 240);
+  --primary: oklch(0.65 0.22 265);
+  --primary-foreground: oklch(0.08 0.01 255);
+  --secondary: oklch(0.18 0.025 255);
+  --secondary-foreground: oklch(0.85 0.04 265);
+  --muted: oklch(0.17 0.02 255);
+  --muted-foreground: oklch(0.58 0.04 265);
+  --accent: oklch(0.55 0.28 285);
+  --accent-foreground: oklch(0.97 0.01 240);
+  --destructive: oklch(0.55 0.22 25);
+  --destructive-foreground: oklch(0.97 0 0);
+  --border: oklch(0.22 0.03 265);
+  --input: oklch(0.18 0.025 255);
+  --ring: oklch(0.65 0.22 265);
+  --radius: 0.75rem;
+
+  /* Lightning accent tokens */
+  --lightning: oklch(0.72 0.22 265);
+  --lightning-violet: oklch(0.62 0.26 285);
+  --storm-surface: oklch(0.14 0.02 255);
+  --storm-surface-raised: oklch(0.18 0.025 260);
+  --glow-blue: 0 0 16px oklch(0.65 0.22 265 / 0.45);
+  --glow-violet: 0 0 16px oklch(0.55 0.28 285 / 0.45);
+}
+
+@theme inline {
+  --font-sans: 'Geist', 'Geist Fallback';
+  --font-mono: 'Geist Mono', 'Geist Mono Fallback';
+  --color-lightning: var(--lightning);
+  --color-lightning-violet: var(--lightning-violet);
+  --color-storm-surface: var(--storm-surface);
+  --color-storm-surface-raised: var(--storm-surface-raised);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  .glow-primary {
+    box-shadow: var(--glow-blue);
+  }
+  .glow-accent {
+    box-shadow: var(--glow-violet);
+  }
+  .lightning-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, oklch(0.65 0.22 265 / 0.6), oklch(0.55 0.28 285 / 0.6), transparent);
+  }
+  .glass-panel {
+    background: oklch(0.15 0.02 255 / 0.7);
+    backdrop-filter: blur(12px);
+    border: 1px solid oklch(0.65 0.22 265 / 0.2);
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 8px oklch(0.65 0.22 265 / 0.35); }
+  50% { box-shadow: 0 0 20px oklch(0.65 0.22 265 / 0.7), 0 0 40px oklch(0.55 0.28 285 / 0.3); }
+}
+
+@keyframes lightning-flash {
+  0%, 90%, 100% { opacity: 1; }
+  92% { opacity: 0.7; }
+  94% { opacity: 1; }
+  96% { opacity: 0.5; }
+  98% { opacity: 1; }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2.5s ease-in-out infinite;
+}
+
+.animate-lightning {
+  animation: lightning-flash 8s ease-in-out infinite;
+}
