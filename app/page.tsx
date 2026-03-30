@@ -1,35 +1,59 @@
 "use client";
 
-import { useState, useMemo } from "react";
-import { CLUBS, Club } from "@/lib/clubs";
+import { useState, useMemo, useEffect } from "react";
+import { Club } from "@/lib/clubs";
 import { ClubCard } from "@/components/club-card";
 import { ClubDetailModal } from "@/components/club-detail-modal";
 import { FilterBar, Filters, SortKey, DEFAULT_FILTERS } from "@/components/filter-bar";
 import { Search, Zap, CloudLightning } from "lucide-react";
 
 export default function Home() {
+  const [clubs, setClubs] = useState<Club[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState("");
   const [filters, setFilters] = useState<Filters>(DEFAULT_FILTERS);
   const [sort, setSort] = useState<SortKey>("rating-desc");
   const [selected, setSelected] = useState<Club | null>(null);
 
+  useEffect(() => {
+    const fetchClubs = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch("/api/clubs");
+        if (!response.ok) throw new Error("Failed to fetch clubs");
+        const data = await response.json();
+        setClubs(data);
+        setError(null);
+      } catch (err) {
+        console.error("[v0] Error fetching clubs:", err);
+        setError("Failed to load clubs from Google Sheets");
+        setClubs([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchClubs();
+  }, []);
+
   const filtered = useMemo(() => {
-    let clubs = CLUBS;
+    let result = clubs;
 
     // Search
     if (search.trim()) {
       const q = search.toLowerCase();
-      clubs = clubs.filter((c) => c.name.toLowerCase().includes(q));
+      result = result.filter((c) => c.name.toLowerCase().includes(q));
     }
 
     // Filters
-    if (filters.sfwFriendly !== null) clubs = clubs.filter((c) => c.sfwFriendly === filters.sfwFriendly);
-    if (filters.sfwActive !== null) clubs = clubs.filter((c) => c.sfwActive === filters.sfwActive);
-    if (filters.flashType !== null) clubs = clubs.filter((c) => c.flashType === filters.flashType);
-    clubs = clubs.filter((c) => c.avgRating >= filters.ratingMin);
+    if (filters.sfwFriendly !== null) result = result.filter((c) => c.sfwFriendly === filters.sfwFriendly);
+    if (filters.sfwActive !== null) result = result.filter((c) => c.sfwActive === filters.sfwActive);
+    if (filters.flashType !== null) result = result.filter((c) => c.flashType === filters.flashType);
+    result = result.filter((c) => c.avgRating >= filters.ratingMin);
 
     // Sort
-    const sorted = [...clubs];
+    const sorted = [...result];
     switch (sort) {
       case "rating-desc":
         sorted.sort((a, b) => b.avgRating - a.avgRating);
@@ -57,7 +81,7 @@ export default function Home() {
         break;
     }
     return sorted;
-  }, [search, filters, sort]);
+  }, [clubs, search, filters, sort]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -133,7 +157,23 @@ export default function Home() {
         </div>
 
         {/* Grid */}
-        {filtered.length > 0 ? (
+        {loading ? (
+          <main className="flex flex-col items-center justify-center py-24 gap-3">
+            <div className="w-8 h-8 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
+            <p className="text-muted-foreground text-sm">Loading clubs...</p>
+          </main>
+        ) : error ? (
+          <main className="flex flex-col items-center justify-center py-24 gap-3 text-center">
+            <Zap size={36} className="text-destructive/30" />
+            <p className="text-destructive text-sm">{error}</p>
+            <button
+              onClick={() => window.location.reload()}
+              className="text-xs text-primary hover:underline"
+            >
+              Try again
+            </button>
+          </main>
+        ) : filtered.length > 0 ? (
           <main>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {filtered.map((club) => (
@@ -161,7 +201,7 @@ export default function Home() {
         <footer className="mt-12 text-center">
           <div className="lightning-divider max-w-xs mx-auto mb-4" />
           <p className="text-[11px] text-muted-foreground">
-            {CLUBS.length} clubs in the directory
+            {clubs.length} clubs in the directory
           </p>
         </footer>
       </div>
