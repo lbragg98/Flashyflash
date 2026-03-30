@@ -2,7 +2,7 @@
 
 import { Club } from "@/lib/clubs";
 import { useEffect, useState } from "react";
-import { X, Copy, Check, Star, Gauge, Wind, Package, Calendar, Timer, MessageSquare } from "lucide-react";
+import { X, Copy, Check, Star, MessageSquare } from "lucide-react";
 
 interface ClubDetailModalProps {
   club: Club | null;
@@ -16,41 +16,18 @@ const FLASH_TYPE_COLORS: Record<string, { bg: string; text: string }> = {
   Hybrid: { bg: "bg-[#b366ff]/15", text: "text-[#b366ff]" },
 };
 
-function StatBar({ value, max, label, color }: { value: number; max: number; label: string; color: string }) {
+function StatBar({ value, max, label }: { value: number; max: number; label: string }) {
   const percentage = (value / max) * 100;
-  const colorClasses: Record<string, string> = {
-    cyan: "bg-[#00d4ff]",
-    violet: "bg-[#b366ff]",
-    yellow: "bg-[#ffd700]",
-    emerald: "bg-emerald-400",
-  };
-
   return (
-    <div>
-      <div className="flex items-center justify-between mb-1">
-        <span className="text-xs text-[#8a96b4] font-medium">{label}</span>
-        <span className="text-xs text-[#f0f4ff] font-bold">{value.toFixed(1)} / {max}</span>
-      </div>
-      <div className="h-1.5 bg-[#0f1425] rounded-full overflow-hidden border border-[#1a2447]">
+    <div className="flex items-center gap-3">
+      <span className="text-xs text-[#8a96b4] w-24 shrink-0">{label}</span>
+      <div className="flex-1 h-2 bg-[#0a0f1f] rounded-full overflow-hidden">
         <div
-          className={`h-full ${colorClasses[color]} transition-all duration-500`}
+          className="h-full bg-gradient-to-r from-[#00d4ff] to-[#b366ff] transition-all duration-500"
           style={{ width: `${percentage}%` }}
         />
       </div>
-    </div>
-  );
-}
-
-function DetailRow({ icon, label, children }: { icon: React.ReactNode; label: string; children: React.ReactNode }) {
-  return (
-    <div className="py-2 flex items-start gap-3">
-      <div className="text-[#00d4ff] mt-0.5 shrink-0">{icon}</div>
-      <div className="flex-1 min-w-0">
-        <div className="text-xs uppercase tracking-wide text-[#6b7793] font-semibold mb-0.5">
-          {label}
-        </div>
-        <div className="text-sm text-[#f0f4ff]">{children}</div>
-      </div>
+      <span className="text-xs font-bold text-[#f0f4ff] w-10 text-right">{value}/{max}</span>
     </div>
   );
 }
@@ -77,119 +54,117 @@ export function ClubDetailModal({ club, onClose }: ClubDetailModalProps) {
   const flashColor = FLASH_TYPE_COLORS[club.flashType] ?? { bg: "bg-[#151d35]", text: "text-[#8a96b4]" };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center pointer-events-none sm:p-4">
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center">
       {/* Backdrop */}
       <div
         onClick={onClose}
-        className="absolute inset-0 bg-black/60 backdrop-blur-sm pointer-events-auto"
+        className="absolute inset-0 bg-black/70 backdrop-blur-sm"
         aria-hidden="true"
       />
 
       {/* Modal */}
-      <div className="storm-panel-dark relative w-full sm:w-96 max-h-[90vh] overflow-y-auto pointer-events-auto rounded-t-2xl sm:rounded-2xl p-6 shadow-storm-lg">
-        {/* Close button */}
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 p-2 rounded-lg hover:bg-[#00d4ff]/10 text-[#8a96b4] hover:text-[#4dffff] transition-all duration-200"
-        >
-          <X size={20} />
-        </button>
-
+      <div className="relative w-full sm:max-w-md max-h-[85vh] overflow-y-auto bg-gradient-to-b from-[#0d1424] to-[#080c18] border border-[#1a2744] rounded-t-2xl sm:rounded-2xl shadow-2xl">
         {/* Header */}
-        <div className="mb-4">
-          <div className="flex items-start gap-3 mb-2">
-            <div className="flex-1">
-              <h2 className="text-xl font-bold text-[#f0f4ff]">{club.name}</h2>
-              <p className="text-xs text-[#6b7793] mt-1">{club.clubAge} years old</p>
+        <div className="sticky top-0 z-10 bg-gradient-to-b from-[#0d1424] to-[#0d1424]/95 px-5 pt-5 pb-4 border-b border-[#1a2744]">
+          <button
+            onClick={onClose}
+            className="absolute top-4 right-4 p-1.5 rounded-lg hover:bg-[#1a2744] text-[#6b7793] hover:text-[#f0f4ff] transition-colors"
+          >
+            <X size={18} />
+          </button>
+
+          <div className="flex items-start gap-3 pr-8">
+            <div className="flex-1 min-w-0">
+              <h2 className="text-lg font-bold text-[#f0f4ff] leading-tight">{club.name}</h2>
+              <div className="flex items-center gap-2 mt-1.5">
+                <div className="flex items-center gap-1">
+                  <Star size={14} className="text-[#ffd700]" fill="currentColor" />
+                  <span className="text-sm font-bold text-[#f0f4ff]">{club.avgRating.toFixed(1)}/5</span>
+                </div>
+                <span className="text-[#3a4563]">|</span>
+                <span className="text-xs text-[#8a96b4]">{club.clubAge} old</span>
+              </div>
             </div>
-            <div className={`px-3 py-1 rounded-lg text-xs font-bold ${flashColor.bg} ${flashColor.text}`}>
+            <div className={`px-2.5 py-1 rounded-lg text-xs font-bold shrink-0 ${flashColor.bg} ${flashColor.text}`}>
               {club.flashType}
             </div>
           </div>
-          <div className="flex items-center gap-2 mb-3">
-            <Star size={16} className="text-[#ffd700]" fill="currentColor" />
-            <span className="text-lg font-bold text-[#f0f4ff]">{club.avgRating.toFixed(1)}</span>
-            <span className="text-xs text-[#8a96b4]">/ 5.0</span>
-          </div>
         </div>
 
-        {/* Quick Link */}
-        {club.quickLink && (
-          <div className="mb-4 p-3 rounded-lg bg-[#00d4ff]/10 border border-[#00d4ff]/30">
-            <div className="flex items-center gap-2 mb-2">
-              <span className="text-xs text-[#8a96b4] font-semibold uppercase tracking-wide">Quick Link</span>
+        {/* Body */}
+        <div className="px-5 py-4 space-y-5">
+          {/* Quick Link */}
+          {club.quickLink && (
+            <div className="p-3 rounded-xl bg-[#0a0f1f] border border-[#1a2744]">
+              <div className="flex items-center justify-between gap-2">
+                <span className="text-sm font-mono text-[#8a96b4] truncate">{club.quickLink}</span>
+                <button
+                  onClick={handleCopy}
+                  className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-[#00d4ff]/15 text-[#4dffff] text-xs font-semibold hover:bg-[#00d4ff]/25 transition-colors shrink-0"
+                >
+                  {copied ? <Check size={12} /> : <Copy size={12} />}
+                  {copied ? "Copied" : "Copy"}
+                </button>
+              </div>
             </div>
-            <div className="flex items-center gap-2 gap-y-2 flex-wrap">
-              <span className="text-sm font-mono text-[#4dffff] break-all flex-1">{club.quickLink}</span>
-              <button
-                onClick={handleCopy}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#00d4ff]/25 text-[#4dffff] text-xs font-semibold hover:bg-[#00d4ff]/35 transition-all duration-200 shrink-0"
-              >
-                {copied ? <Check size={12} /> : <Copy size={12} />}
-                {copied ? "Copied" : "Copy"}
-              </button>
+          )}
+
+          {/* Key Info Grid */}
+          <div className="grid grid-cols-3 gap-3">
+            <div className="p-3 rounded-xl bg-[#0a0f1f] border border-[#1a2744] text-center">
+              <p className="text-[10px] uppercase tracking-wide text-[#6b7793] mb-1">Price</p>
+              <p className="text-sm font-bold text-[#00d4ff]">{club.avgPrice} bentos</p>
+            </div>
+            <div className="p-3 rounded-xl bg-[#0a0f1f] border border-[#1a2744] text-center">
+              <p className="text-[10px] uppercase tracking-wide text-[#6b7793] mb-1">Flash</p>
+              <p className="text-sm font-bold text-[#f0f4ff]">{club.avgFlashLength} min</p>
+            </div>
+            <div className="p-3 rounded-xl bg-[#0a0f1f] border border-[#1a2744] text-center">
+              <p className="text-[10px] uppercase tracking-wide text-[#6b7793] mb-1">Age</p>
+              <p className="text-sm font-bold text-[#f0f4ff]">{club.clubAge}</p>
             </div>
           </div>
-        )}
 
-        <div className="storm-divider mb-4" />
+          {/* Performance Stats */}
+          <div className="p-4 rounded-xl bg-[#0a0f1f] border border-[#1a2744] space-y-3">
+            <p className="text-[10px] uppercase tracking-wide text-[#6b7793] font-semibold mb-2">Performance</p>
+            <StatBar value={club.invSpeed} max={10} label="Inv Speed" />
+            <StatBar value={club.yeetSpeed} max={10} label="Yeet Speed" />
+            <StatBar value={club.preparedness} max={10} label="Preparedness" />
+          </div>
 
-        {/* Key Stats */}
-        <div className="mb-6 space-y-3">
-          <DetailRow icon={<Star size={16} />} label="Avg Rating">
-            {club.avgRating.toFixed(1)} / 5.0
-          </DetailRow>
-          <DetailRow icon={<MessageSquare size={16} />} label="Avg Price">
-            {club.avgPrice}
-          </DetailRow>
-          <DetailRow icon={<Timer size={16} />} label="Avg Flash Length">
-            {club.avgFlashLength} min
-          </DetailRow>
-        </div>
-
-        <div className="storm-divider mb-4" />
-
-        {/* Performance Bars */}
-        <div className="mb-6 space-y-4">
-          <StatBar value={club.invSpeed} max={10} label="Inv Speed" color="cyan" />
-          <StatBar value={club.yeetSpeed} max={10} label="Yeet Speed" color="violet" />
-          <StatBar value={club.preparedness} max={10} label="Preparedness" color="yellow" />
-        </div>
-
-        <div className="storm-divider mb-4" />
-
-        {/* SFW Status */}
-        <div className="mb-6 space-y-2">
-          <div className="text-xs uppercase tracking-wide font-bold text-[#4dffff] mb-3">SFW Status</div>
+          {/* SFW Status */}
           <div className="flex items-center gap-2 flex-wrap">
             {club.sfwFriendly ? (
-              <span className="storm-badge">SFW Friendly</span>
+              <span className="px-3 py-1.5 rounded-full text-xs font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                SFW Friendly
+              </span>
             ) : (
-              <span className="px-2.5 py-1.5 rounded-full text-xs font-semibold bg-[#1a2447] text-[#8a96b4] border border-[#1a2447]">
+              <span className="px-3 py-1.5 rounded-full text-xs font-semibold bg-[#1a2744] text-[#6b7793] border border-[#1a2744]">
                 Not SFW Friendly
               </span>
             )}
             {club.sfwActive ? (
-              <span className="storm-badge-accent">SFW Active</span>
+              <span className="px-3 py-1.5 rounded-full text-xs font-semibold bg-[#00d4ff]/15 text-[#4dffff] border border-[#00d4ff]/30">
+                SFW Active
+              </span>
             ) : (
-              <span className="px-2.5 py-1.5 rounded-full text-xs font-semibold bg-[#1a2447] text-[#8a96b4] border border-[#1a2447]">
+              <span className="px-3 py-1.5 rounded-full text-xs font-semibold bg-[#1a2744] text-[#6b7793] border border-[#1a2744]">
                 Not SFW Active
               </span>
             )}
           </div>
-        </div>
 
-        <div className="storm-divider mb-4" />
-
-        {/* Comments */}
-        <div>
-          <div className="flex items-center gap-1.5 mb-3">
-            <MessageSquare size={14} className="text-[#00d4ff]" />
-            <span className="text-xs uppercase tracking-widest text-[#4dffff] font-bold">Comments</span>
-          </div>
-          <p className="text-sm text-[#f0f4ff] leading-relaxed whitespace-pre-wrap">
-            {club.comments || "No comments available."}
-          </p>
+          {/* Comments */}
+          {club.comments && (
+            <div className="p-4 rounded-xl bg-[#0a0f1f] border border-[#1a2744]">
+              <div className="flex items-center gap-1.5 mb-2">
+                <MessageSquare size={12} className="text-[#6b7793]" />
+                <span className="text-[10px] uppercase tracking-wide text-[#6b7793] font-semibold">Comments</span>
+              </div>
+              <p className="text-sm text-[#c8d0e8] leading-relaxed whitespace-pre-wrap">{club.comments}</p>
+            </div>
+          )}
         </div>
       </div>
     </div>

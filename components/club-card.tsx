@@ -30,9 +30,12 @@ export function ClubCard({ club, onSelect }: ClubCardProps) {
   };
 
   return (
-    <button
+    <div
+      role="button"
+      tabIndex={0}
       onClick={() => onSelect(club)}
-      className="storm-panel w-full text-left transition-all duration-300 hover:shadow-storm-lg hover:border-[#00d4ff]/40 active:scale-[0.98] group"
+      onKeyDown={(e) => e.key === "Enter" && onSelect(club)}
+      className="storm-panel w-full text-left transition-all duration-300 hover:shadow-storm-lg hover:border-[#00d4ff]/40 active:scale-[0.98] group cursor-pointer"
     >
       {/* Header Row */}
       <div className="flex items-start justify-between gap-3 mb-3">
@@ -56,11 +59,11 @@ export function ClubCard({ club, onSelect }: ClubCardProps) {
             <Star size={12} className="text-[#ffd700]" fill="currentColor" />
             <span className="text-xs text-[#8a96b4]">Rating</span>
           </div>
-          <p className="text-sm font-bold text-[#f0f4ff]">{club.avgRating.toFixed(1)}</p>
+          <p className="text-sm font-bold text-[#f0f4ff]">{club.avgRating.toFixed(1)}/5</p>
         </div>
         <div className="space-y-1">
           <div className="text-xs text-[#8a96b4]">Avg Price</div>
-          <p className="text-sm font-bold text-[#00d4ff]">{club.avgPrice}</p>
+          <p className="text-sm font-bold text-[#00d4ff]">{club.avgPrice} bentos</p>
         </div>
         <div className="space-y-1">
           <div className="text-xs text-[#8a96b4]">Inv Speed</div>
@@ -95,6 +98,6 @@ export function ClubCard({ club, onSelect }: ClubCardProps) {
           </button>
         )}
       </div>
-    </button>
+    </div>
   );
 }
