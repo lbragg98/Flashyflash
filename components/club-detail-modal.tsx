@@ -119,7 +119,7 @@ export function ClubDetailModal({
         onClick={onClose}
       />
 
-      <div className="storm-panel relative z-10 flex max-h-[90vh] w-full max-w-3xl flex-col overflow-hidden rounded-[28px]">
+      <div className="storm-panel relative z-10 flex max-h-[90vh] w-full max-w-3xl flex-col overflow-hidden rounded-[28px] outline outline-1 outline-[#71c7ff]/30 shadow-[0_0_0_1px_rgba(113,199,255,0.15),0_32px_80px_rgba(0,0,0,0.6),0_0_60px_rgba(113,199,255,0.12)]">
         <div className="h-1 w-full bg-gradient-to-r from-[#71c7ff] via-[#c6ebff] to-[#a977ff]" />
 
         <div className="flex items-start justify-between gap-4 px-5 pb-4 pt-5 sm:px-6">

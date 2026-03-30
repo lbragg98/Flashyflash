@@ -140,18 +140,8 @@ export function ClubCard({ club, onSelect }: ClubCardProps) {
         )}
       </div>
 
-      <div className="flex items-center gap-2">
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            onSelect(club);
-          }}
-          className="flex-1 rounded-xl border border-[#71c7ff]/20 bg-[#71c7ff]/10 px-3 py-2 text-sm font-medium text-[#cfeaff] transition hover:border-[#71c7ff]/40 hover:bg-[#71c7ff]/14"
-        >
-          View Details
-        </button>
-
-        {club.quickLink && (
+      {club.quickLink && (
+        <div className="flex items-center gap-2">
           <button
             onClick={handleCopy}
             className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm font-medium text-[#dce9ff] transition hover:bg-white/10"
@@ -160,8 +150,8 @@ export function ClubCard({ club, onSelect }: ClubCardProps) {
             {copied ? <Check size={15} /> : <Link2 size={15} />}
             <span>{copied ? "Copied" : "Copy"}</span>
           </button>
-        )}
-      </div>
+        </div>
+      )}
     </article>
   );
 }
