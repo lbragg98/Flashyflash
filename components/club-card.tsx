@@ -89,13 +89,16 @@ export function ClubCard({ club, onSelect }: ClubCardProps) {
       <div className="flex items-center justify-between pt-2">
         <p className="text-xs text-[#6b7793]">{club.preparedness}/10 prep</p>
         {club.quickLink && (
-          <button
+          <div
+            role="button"
+            tabIndex={0}
             onClick={handleCopy}
-            className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#00d4ff]/15 text-[#4dffff] text-xs font-semibold hover:bg-[#00d4ff]/25 transition-all duration-200 border border-[#00d4ff]/30"
+            onKeyDown={(e) => e.key === "Enter" && handleCopy(e as any)}
+            className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#00d4ff]/15 text-[#4dffff] text-xs font-semibold hover:bg-[#00d4ff]/25 transition-all duration-200 border border-[#00d4ff]/30 cursor-pointer"
           >
             {copied ? <Check size={11} /> : <Copy size={11} />}
             <span>{copied ? "Copied" : "Copy"}</span>
-          </button>
+          </div>
         )}
       </div>
     </div>
