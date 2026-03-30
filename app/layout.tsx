@@ -7,9 +7,8 @@ const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'StormStrike — Club Directory',
-  description: 'The definitive directory for tracking clubs — ratings, flash type, pricing, and more.',
-  generator: 'v0.app',
+  title: 'FlashHub',
+  description: 'Discover. Compare. Flash.',
   icons: {
     icon: [
       {
@@ -46,7 +45,7 @@ export default function RootLayout({
           <div className="storm-mist" />
           <div className="lightning-flash-bg" />
           <div className="ambient-glow" />
-          
+
           {/* Rain streaks */}
           {[...Array(6)].map((_, i) => (
             <div
