@@ -48,7 +48,7 @@ function transformRow(row: string[], index: number): Club {
     invSpeed: parseInt(row[COLUMNS.invSpeed] || "0") || 0,
     yeetSpeed: parseInt(row[COLUMNS.yeetSpeed] || "0") || 0,
     preparedness: parseInt(row[COLUMNS.preparedness] || "0") || 0,
-    avgRating: parseFloat(row[COLUMNS.avgRating] || "0") || 0,
+    avgRating: parseFloat((parseFloat(row[COLUMNS.avgRating] || "0") || 0).toFixed(1)),
     comments: row[COLUMNS.comments]?.trim() || "",
     clubAge: parseInt(row[COLUMNS.clubAge] || "0") || 0,
   };
