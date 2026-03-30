@@ -174,6 +174,22 @@
   }
 }
 
+@keyframes rain-shift {
+  0% {
+    background-position:
+      0 0,
+      0 0,
+      0 0;
+  }
+
+  100% {
+    background-position:
+      0 10px,
+      0 12px,
+      0 8px;
+  }
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -226,6 +242,29 @@
       linear-gradient(110deg, transparent 0%, rgb(190 225 255 / 0.18) 42%, transparent 56%),
       radial-gradient(circle at 28% 18%, rgb(210 230 255 / 0.18), transparent 14%);
     animation: lightning-flash 12s linear infinite;
+  }
+
+  .storm-rain {
+    position: relative;
+  }
+
+  .storm-rain::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: -1;
+    opacity: 0.05;
+    background-image:
+      linear-gradient(to bottom, rgb(255 255 255 / 0.08) 0 1px, transparent 1px 3px),
+      linear-gradient(to bottom, rgb(140 190 255 / 0.05) 0 1px, transparent 1px 4px),
+      linear-gradient(to bottom, rgb(255 255 255 / 0.04) 0 1px, transparent 1px 3px);
+    background-size:
+      1px 5px,
+      1px 6px,
+      1px 4px;
+    background-repeat: repeat;
+    animation: rain-shift 1.8s linear infinite;
   }
 
   .storm-panel {
