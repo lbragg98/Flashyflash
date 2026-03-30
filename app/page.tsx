@@ -5,7 +5,7 @@ import { Club } from "@/lib/clubs";
 import { ClubCard } from "@/components/club-card";
 import { ClubDetailModal } from "@/components/club-detail-modal";
 import { FilterBar, Filters, SortKey, DEFAULT_FILTERS } from "@/components/filter-bar";
-import { Search, Zap, CloudLightning } from "lucide-react";
+import { Search, Zap } from "lucide-react";
 
 export default function Home() {
   const [clubs, setClubs] = useState<Club[]>([]);
@@ -40,19 +40,16 @@ export default function Home() {
   const filtered = useMemo(() => {
     let result = clubs;
 
-    // Search
     if (search.trim()) {
       const q = search.toLowerCase();
       result = result.filter((c) => c.name.toLowerCase().includes(q));
     }
 
-    // Filters
     if (filters.sfwFriendly !== null) result = result.filter((c) => c.sfwFriendly === filters.sfwFriendly);
     if (filters.sfwActive !== null) result = result.filter((c) => c.sfwActive === filters.sfwActive);
     if (filters.flashType !== null) result = result.filter((c) => c.flashType === filters.flashType);
     result = result.filter((c) => c.avgRating >= filters.ratingMin);
 
-    // Sort
     const sorted = [...result];
     switch (sort) {
       case "rating-desc":
@@ -86,25 +83,27 @@ export default function Home() {
   return (
     <div className="min-h-screen">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
-        {/* Header */}
         <header className="mb-10 sm:mb-14 text-center">
           <div className="inline-flex items-center justify-center gap-3 mb-4">
             <div className="h-1 w-8 bg-gradient-to-r from-[#00d4ff] to-[#b366ff]" />
-            <h1 className="text-4xl sm:text-5xl font-black tracking-tighter">
+            <h1 className="text-4xl sm:text-5xl font-black tracking-tighter storm-text-glow">
               <span className="text-[#f0f4ff]">STORM</span>
               <span className="text-[#00d4ff]">STRIKE</span>
             </h1>
             <div className="h-1 w-8 bg-gradient-to-l from-[#00d4ff] to-[#b366ff]" />
           </div>
+
           <p className="text-[#8a96b4] text-sm sm:text-base max-w-xl mx-auto leading-relaxed mb-6">
             The definitive club directory. Filter by type, rating, speed, and more.
           </p>
+
           <div className="storm-divider max-w-xs mx-auto" />
         </header>
 
-        {/* Search */}
         <div className="mb-6 relative">
-          <label htmlFor="search" className="sr-only">Search clubs</label>
+          <label htmlFor="search" className="sr-only">
+            Search clubs
+          </label>
           <Search
             size={16}
             className="absolute left-4 top-1/2 -translate-y-1/2 text-[#6b7793] pointer-events-none"
@@ -119,7 +118,6 @@ export default function Home() {
           />
         </div>
 
-        {/* Filter bar */}
         <div className="mb-8">
           <FilterBar
             filters={filters}
@@ -130,7 +128,6 @@ export default function Home() {
           />
         </div>
 
-        {/* Grid */}
         {loading ? (
           <main className="flex flex-col items-center justify-center py-32 gap-4">
             <div className="w-10 h-10 border-2 border-[#00d4ff]/20 border-t-[#00d4ff] rounded-full animate-spin" />
@@ -171,16 +168,12 @@ export default function Home() {
           </main>
         )}
 
-        {/* Footer */}
         <footer className="mt-16 text-center">
           <div className="storm-divider max-w-xs mx-auto mb-4" />
-          <p className="text-xs text-[#6b7793]">
-            {clubs.length} clubs in the directory
-          </p>
+          <p className="text-xs text-[#6b7793]">{clubs.length} clubs in the directory</p>
         </footer>
       </div>
 
-      {/* Detail Modal */}
       <ClubDetailModal club={selected} onClose={() => setSelected(null)} />
     </div>
   );
