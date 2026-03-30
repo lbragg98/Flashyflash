@@ -23,16 +23,16 @@ interface ClubDetailModalProps {
   onClose: () => void;
 }
 
-function StatBar({ value, max = 10, color = "primary" }: { value: number; max?: number; color?: string }) {
+function StatBar({ value, max = 5, color = "primary" }: { value: number; max?: number; color?: string }) {
   const pct = Math.min(100, (value / max) * 100);
   const colorClass =
     color === "accent"
       ? "bg-accent"
       : color === "yellow"
-      ? "bg-yellow-400"
-      : color === "teal"
-      ? "bg-teal-400"
-      : "bg-primary";
+        ? "bg-yellow-400"
+        : color === "teal"
+          ? "bg-teal-400"
+          : "bg-primary";
   return (
     <div className="flex items-center gap-2 w-full">
       <div className="flex-1 h-1.5 rounded-full bg-border overflow-hidden">
