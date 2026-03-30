@@ -1,278 +1,247 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
+/* Storm theme for Club Directory */
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: #050817;
-  --foreground: #f0f4ff;
-  --card: #0f1425;
-  --card-foreground: #f0f4ff;
-  --popover: #0d0f1d;
-  --popover-foreground: #f0f4ff;
-  --primary: #00d4ff;
-  --primary-foreground: #050817;
-  --secondary: #1a2847;
-  --secondary-foreground: #8a96b4;
-  --muted: #1e2b47;
-  --muted-foreground: #6b7793;
-  --accent: #b366ff;
-  --accent-foreground: #f0f4ff;
-  --destructive: #ff3366;
-  --destructive-foreground: #f0f4ff;
-  --border: #1e2d4a;
-  --input: #0f1425;
-  --ring: #00d4ff;
-  --radius: 0.875rem;
+  /* Storm theme — always dark */
+  --background: oklch(0.1 0.015 255);
+  --foreground: oklch(0.94 0.01 240);
+  --card: oklch(0.14 0.02 255);
+  --card-foreground: oklch(0.94 0.01 240);
+  --popover: oklch(0.12 0.02 255);
+  --popover-foreground: oklch(0.94 0.01 240);
+  --primary: oklch(0.65 0.22 265);
+  --primary-foreground: oklch(0.08 0.01 255);
+  --secondary: oklch(0.18 0.025 255);
+  --secondary-foreground: oklch(0.85 0.04 265);
+  --muted: oklch(0.17 0.02 255);
+  --muted-foreground: oklch(0.58 0.04 265);
+  --accent: oklch(0.55 0.28 285);
+  --accent-foreground: oklch(0.97 0.01 240);
+  --destructive: oklch(0.55 0.22 25);
+  --destructive-foreground: oklch(0.97 0 0);
+  --border: oklch(0.22 0.03 265);
+  --input: oklch(0.18 0.025 255);
+  --ring: oklch(0.65 0.22 265);
+  --radius: 0.75rem;
+
+  /* Lightning accent tokens */
+  --lightning: oklch(0.72 0.22 265);
+  --lightning-violet: oklch(0.62 0.26 285);
+  --storm-surface: oklch(0.14 0.02 255);
+  --storm-surface-raised: oklch(0.18 0.025 260);
+  --glow-blue: 0 0 16px oklch(0.65 0.22 265 / 0.45);
+  --glow-violet: 0 0 16px oklch(0.55 0.28 285 / 0.45);
 }
 
 @theme inline {
   --font-sans: 'Geist', 'Geist Fallback';
   --font-mono: 'Geist Mono', 'Geist Mono Fallback';
-}
-
-@keyframes storm-clouds {
-  0% {
-    transform: translate3d(-4%, 0, 0) scale(1.05);
-  }
-  50% {
-    transform: translate3d(3%, 1.5%, 0) scale(1.1);
-  }
-  100% {
-    transform: translate3d(-4%, 0, 0) scale(1.05);
-  }
-}
-
-@keyframes storm-clouds-reverse {
-  0% {
-    transform: translate3d(3%, 0, 0) scale(1.08);
-  }
-  50% {
-    transform: translate3d(-3%, -1%, 0) scale(1.12);
-  }
-  100% {
-    transform: translate3d(3%, 0, 0) scale(1.08);
-  }
-}
-
-@keyframes lightning-flash {
-  0%,
-  92%,
-  100% {
-    opacity: 0;
-  }
-  93% {
-    opacity: 0.04;
-  }
-  94% {
-    opacity: 0.22;
-  }
-  95% {
-    opacity: 0.06;
-  }
-  96% {
-    opacity: 0.16;
-  }
-  97% {
-    opacity: 0;
-  }
-}
-
-@keyframes mist-drift {
-  0% {
-    transform: translate3d(-2%, 0, 0);
-  }
-  50% {
-    transform: translate3d(2%, -1%, 0);
-  }
-  100% {
-    transform: translate3d(-2%, 0, 0);
-  }
-}
-
-@keyframes rain-shift {
-  0% {
-    background-position: 0 0, 0 0, 0 0;
-  }
-  100% {
-    background-position: 0 18px, 0 32px, 0 24px;
-  }
+  --color-lightning: var(--lightning);
+  --color-lightning-violet: var(--lightning-violet);
+  --color-storm-surface: var(--storm-surface);
+  --color-storm-surface-raised: var(--storm-surface-raised);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
 }
 
 @layer base {
   * {
-    @apply border-border;
+    @apply border-border outline-ring/50;
   }
   body {
     @apply bg-background text-foreground;
-    min-height: 100vh;
-    position: relative;
-    background:
-      radial-gradient(circle at 18% 18%, rgb(116 162 255 / 0.16), transparent 22%),
-      radial-gradient(circle at 82% 12%, rgb(165 120 255 / 0.12), transparent 20%),
-      radial-gradient(circle at 50% 120%, rgb(110 135 255 / 0.1), transparent 28%),
-      linear-gradient(180deg, #060816 0%, #0c1224 34%, #111a31 68%, #18223d 100%);
-    background-attachment: fixed;
-    overflow-x: hidden;
-  }
-
-  body::before,
-  body::after {
-    content: '';
-    position: fixed;
-    inset: -12%;
-    pointer-events: none;
-    z-index: -1;
-  }
-
-  body::before {
-    opacity: 0.7;
-    filter: blur(38px);
-    background:
-      radial-gradient(ellipse at 20% 24%, rgb(29 44 76 / 0.95) 0%, transparent 38%),
-      radial-gradient(ellipse at 72% 20%, rgb(38 52 88 / 0.88) 0%, transparent 34%),
-      radial-gradient(ellipse at 48% 42%, rgb(17 24 45 / 0.95) 0%, transparent 42%),
-      radial-gradient(ellipse at 82% 54%, rgb(21 31 57 / 0.8) 0%, transparent 32%);
-    animation: storm-clouds 24s ease-in-out infinite;
-  }
-
-  body::after {
-    opacity: 0.5;
-    filter: blur(60px);
-    background:
-      radial-gradient(ellipse at 32% 70%, rgb(80 96 138 / 0.2) 0%, transparent 30%),
-      radial-gradient(ellipse at 68% 82%, rgb(112 130 180 / 0.12) 0%, transparent 28%),
-      linear-gradient(to top, rgb(191 215 255 / 0.07), transparent 38%);
-    animation: mist-drift 18s ease-in-out infinite;
   }
 }
 
 @layer utilities {
-  .storm-background {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 0;
-    overflow: hidden;
+  .glow-primary {
+    box-shadow: var(--glow-blue);
   }
-
-  .sky-base {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(180deg, #060816 0%, #0c1224 34%, #111a31 68%, #18223d 100%);
+  .glow-accent {
+    box-shadow: var(--glow-violet);
   }
-
-  .sky-glow {
-    position: absolute;
-    inset: 0;
-    background:
-      radial-gradient(ellipse at 50% 0%, rgb(100 150 255 / 0.08), transparent 60%),
-      radial-gradient(ellipse at 0% 50%, rgb(150 100 255 / 0.06), transparent 50%);
-  }
-
-  .cloud-container {
-    position: absolute;
-    inset: 0;
-  }
-
-  .cloud-1,
-  .cloud-2,
-  .cloud-3 {
-    position: absolute;
-    filter: blur(40px);
-    mix-blend-mode: screen;
-  }
-
-  .cloud-1 {
-    width: 500px;
-    height: 300px;
-    background: radial-gradient(ellipse at center, rgb(80 120 200 / 0.3), transparent);
-    top: 10%;
-    left: 5%;
-    animation: storm-clouds 25s ease-in-out infinite;
-  }
-
-  .cloud-2 {
-    width: 600px;
-    height: 350px;
-    background: radial-gradient(ellipse at center, rgb(100 140 220 / 0.25), transparent);
-    top: 30%;
-    right: -5%;
-    animation: storm-clouds-reverse 30s ease-in-out infinite;
-  }
-
-  .cloud-3 {
-    width: 450px;
-    height: 280px;
-    background: radial-gradient(ellipse at center, rgb(90 130 210 / 0.28), transparent);
-    bottom: 15%;
-    left: 15%;
-    animation: storm-clouds 28s ease-in-out infinite reverse;
-  }
-
-  .lightning-flash {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg,
-      transparent 0%,
-      rgb(100 150 255 / 0.15) 30%,
-      rgb(100 150 255 / 0.2) 50%,
-      rgb(100 150 255 / 0.15) 70%,
-      transparent 100%);
-    animation: lightning-flash 9s linear infinite;
-  }
-
-  .lightning-secondary {
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse at 50% 20%, rgb(180 150 255 / 0.08), transparent 60%);
-    animation: lightning-flash 9s linear infinite 1.5s;
-  }
-
-  .mist-layer {
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse at 50% 100%, rgb(100 120 180 / 0.15), transparent);
-    animation: mist-drift 18s ease-in-out infinite;
-  }
-
-  .content-wrapper {
-    position: relative;
-    z-index: 10;
-  }
-
-  .storm-panel {
-    background: linear-gradient(180deg,
-        rgb(20 28 50 / 0.72) 0%,
-        rgb(17 24 43 / 0.78) 100%);
-    border: 1px solid rgb(120 154 255 / 0.22);
-    box-shadow:
-      0 10px 30px rgb(0 0 0 / 0.28),
-      inset 0 1px 0 rgb(255 255 255 / 0.06),
-      0 0 0 1px rgb(80 112 255 / 0.06);
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
-    border-radius: 0.75rem;
-    padding: 1rem;
-  }
-
-  .storm-input {
-    @apply bg-[#0f1425] border border-[#1e2d4a] text-[#f0f4ff] placeholder-[#6b7793] rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent transition-all;
-  }
-
-  .storm-divider {
+  .lightning-divider {
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgb(100 150 255 / 0.3), transparent);
+    background: linear-gradient(90deg, transparent, oklch(0.65 0.22 265 / 0.6), oklch(0.55 0.28 285 / 0.6), transparent);
+  }
+  .glass-panel {
+    background: oklch(0.15 0.02 255 / 0.7);
+    backdrop-filter: blur(12px);
+    border: 1px solid oklch(0.65 0.22 265 / 0.2);
   }
 }
 
+/* Storm background layers */
+.storm-bg-container {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.storm-sky {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, 
+    oklch(0.08 0.012 255) 0%,
+    oklch(0.1 0.015 255) 50%,
+    oklch(0.12 0.018 260) 100%);
+}
+
+.storm-cloud {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(40px);
+  mix-blend-mode: screen;
+}
+
+.cloud-layer-1 {
+  width: 600px;
+  height: 300px;
+  background: radial-gradient(ellipse at center, oklch(0.3 0.02 255 / 0.7), transparent);
+  top: 5%;
+  left: -10%;
+  animation: drift-cloud-slow 25s ease-in-out infinite;
+}
+
+.cloud-layer-2 {
+  width: 700px;
+  height: 350px;
+  background: radial-gradient(ellipse at center, oklch(0.25 0.015 260 / 0.6), transparent);
+  top: 25%;
+  right: -15%;
+  animation: drift-cloud-slower 35s ease-in-out infinite;
+}
+
+.cloud-layer-3 {
+  width: 500px;
+  height: 250px;
+  background: radial-gradient(ellipse at center, oklch(0.28 0.018 255 / 0.65), transparent);
+  bottom: 20%;
+  left: 10%;
+  animation: drift-cloud-slow 30s ease-in-out infinite reverse;
+}
+
+.storm-mist {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 100%, oklch(0.12 0.01 265 / 0.25), transparent);
+  animation: drift-mist 20s ease-in-out infinite;
+}
+
+.lightning-flash-bg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, 
+    oklch(0.65 0.22 265 / 0) 0%,
+    oklch(0.65 0.22 265 / 0.25) 30%,
+    oklch(0.65 0.22 265 / 0.35) 50%,
+    oklch(0.65 0.22 265 / 0.25) 70%,
+    oklch(0.65 0.22 265 / 0) 100%);
+  animation: background-lightning-flash 12s ease-in-out infinite 2s;
+  pointer-events: none;
+}
+
+.ambient-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 30%, oklch(0.65 0.22 265 / 0.15), transparent);
+  animation: subtle-ambient-pulse 8s ease-in-out infinite;
+}
+
+.storm-content {
+  position: relative;
+  z-index: 10;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2.5s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 8px oklch(0.65 0.22 265 / 0.35); }
+  50% { box-shadow: 0 0 20px oklch(0.65 0.22 265 / 0.7), 0 0 40px oklch(0.55 0.28 285 / 0.3); }
+}
+
+@keyframes drift-cloud-slow {
+  0%, 100% { transform: translateX(0) translateY(0); }
+  33% { transform: translateX(30px) translateY(-10px); }
+  66% { transform: translateX(-20px) translateY(8px); }
+}
+
+@keyframes drift-cloud-slower {
+  0%, 100% { transform: translateX(0) translateY(0); }
+  33% { transform: translateX(-40px) translateY(15px); }
+  66% { transform: translateX(20px) translateY(-12px); }
+}
+
+@keyframes drift-mist {
+  0%, 100% { transform: translateX(0); opacity: 0.15; }
+  50% { transform: translateX(20px); opacity: 0.2; }
+}
+
+@keyframes background-lightning-flash {
+  0%, 8%, 10%, 12%, 16%, 18%, 100% { opacity: 0; }
+  9%, 11%, 17% { opacity: 1; }
+}
+
+@keyframes subtle-ambient-pulse {
+  0%, 100% { opacity: 0.15; }
+  50% { opacity: 0.25; }
+}
+
+@keyframes rain-fall {
+  0% { transform: translateY(-100%); opacity: 0; }
+  10% { opacity: 0.3; }
+  90% { opacity: 0.3; }
+  100% { transform: translateY(100vh); opacity: 0; }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
+  .cloud-layer-1,
+  .cloud-layer-2,
+  .cloud-layer-3,
+  .storm-mist,
+  .lightning-flash-bg,
+  .ambient-glow {
+    animation: none;
   }
 }

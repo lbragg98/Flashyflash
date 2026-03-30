@@ -1,7 +1,7 @@
 "use client";
 
 import { Club } from "@/lib/clubs";
-import { Copy, Check, Star } from "lucide-react";
+import { Copy, Star, Zap, Clock, Hash, Check } from "lucide-react";
 import { useState } from "react";
 
 interface ClubCardProps {
@@ -9,16 +9,49 @@ interface ClubCardProps {
   onSelect: (club: Club) => void;
 }
 
-const FLASH_TYPE_COLORS: Record<string, { bg: string; text: string }> = {
-  Dog: { bg: "bg-[#00d4ff]/10", text: "text-[#4dffff]" },
-  Cat: { bg: "bg-[#b366ff]/10", text: "text-[#d699ff]" },
-  Invites: { bg: "bg-[#00d4ff]/10", text: "text-[#00d4ff]" },
-  Hybrid: { bg: "bg-[#b366ff]/10", text: "text-[#b366ff]" },
+const FLASH_TYPE_COLORS: Record<string, string> = {
+  Dog: "text-primary bg-primary/10 border-primary/30",
+  Cat: "text-accent bg-accent/10 border-accent/30",
+  Invites: "text-yellow-400 bg-yellow-400/10 border-yellow-400/30",
+  Hybrid: "text-teal-400 bg-teal-400/10 border-teal-400/30",
 };
+
+function StarRating({ rating }: { rating: number }) {
+  const full = Math.floor(rating);
+  const partial = rating - full;
+  return (
+    <span className="flex items-center gap-0.5" aria-label={`Rating: ${rating} out of 5`}>
+      {Array.from({ length: 5 }).map((_, i) => (
+        <span key={i} className="relative inline-block">
+          <Star
+            size={12}
+            className="text-muted-foreground/30"
+            fill="currentColor"
+          />
+          {i < full && (
+            <Star
+              size={12}
+              className="absolute inset-0 text-yellow-400"
+              fill="currentColor"
+            />
+          )}
+          {i === full && partial > 0 && (
+            <span
+              className="absolute inset-0 overflow-hidden text-yellow-400"
+              style={{ width: `${partial * 100}%` }}
+            >
+              <Star size={12} fill="currentColor" />
+            </span>
+          )}
+        </span>
+      ))}
+    </span>
+  );
+}
 
 export function ClubCard({ club, onSelect }: ClubCardProps) {
   const [copied, setCopied] = useState(false);
-  const flashColor = FLASH_TYPE_COLORS[club.flashType] ?? { bg: "bg-[#151d35]", text: "text-[#8a96b4]" };
+  const flashColorClass = FLASH_TYPE_COLORS[club.flashType] ?? "text-foreground bg-secondary border-border";
 
   const handleCopy = async (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -30,77 +63,82 @@ export function ClubCard({ club, onSelect }: ClubCardProps) {
   };
 
   return (
-    <div
+    <article
+      className="glass-panel rounded-xl p-4 flex flex-col gap-3 cursor-pointer group transition-all duration-200 hover:border-primary/50 hover:shadow-[0_0_24px_oklch(0.65_0.22_265/0.25)] active:scale-[0.99]"
+      onClick={() => onSelect(club)}
       role="button"
       tabIndex={0}
-      onClick={() => onSelect(club)}
+      aria-label={`View details for ${club.name}`}
       onKeyDown={(e) => e.key === "Enter" && onSelect(club)}
-      className="storm-panel w-full text-left transition-all duration-300 hover:shadow-storm-lg hover:border-[#00d4ff]/40 active:scale-[0.98] group cursor-pointer"
     >
-      {/* Header Row */}
-      <div className="flex items-start justify-between gap-3 mb-3">
-        <div className="flex-1 min-w-0">
-          <h3 className="font-bold text-[#f0f4ff] text-base leading-tight group-hover:text-[#4dffff] transition-colors truncate">
+      {/* Header row */}
+      <div className="flex items-start justify-between gap-2">
+        <div className="flex items-center gap-2 min-w-0">
+          <Zap
+            size={14}
+            className="shrink-0 text-primary opacity-70 group-hover:opacity-100 transition-opacity"
+            fill="currentColor"
+          />
+          <h3 className="font-semibold text-foreground text-sm leading-tight truncate">
             {club.name}
           </h3>
-          <p className="text-[#6b7793] text-xs mt-1">
-            {club.avgFlashLength} min • {club.clubAge}y old
-          </p>
         </div>
-        <div className={`px-2.5 py-1 rounded-lg text-xs font-semibold whitespace-nowrap ${flashColor.bg} ${flashColor.text}`}>
+        <span
+          className={`shrink-0 text-[10px] font-semibold px-2 py-0.5 rounded-full border ${flashColorClass}`}
+        >
           {club.flashType}
+        </span>
+      </div>
+
+      {/* Stats row */}
+      <div className="grid grid-cols-2 gap-x-3 gap-y-1.5 text-xs text-muted-foreground">
+        <div className="flex items-center gap-1.5">
+          <Star size={11} className="text-yellow-400 shrink-0" fill="currentColor" />
+          <span className="text-foreground font-medium">{club.avgRating.toFixed(1)}</span>
+          <StarRating rating={club.avgRating} />
+        </div>
+        <div className="flex items-center gap-1.5">
+          <Hash size={11} className="text-primary shrink-0" />
+          <span className="text-foreground font-medium">{club.avgPrice}</span>
+          <span className="text-muted-foreground">avg</span>
+        </div>
+        <div className="flex items-center gap-1.5">
+          <Clock size={11} className="text-muted-foreground shrink-0" />
+          <span>{club.clubAge} old</span>
+        </div>
+        <div className="flex items-center gap-1.5 flex-wrap">
+          {club.sfwFriendly && (
+            <span className="px-1.5 py-0.5 text-[10px] font-medium rounded bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+              SFW Friendly
+            </span>
+          )}
+          {club.sfwActive && (
+            <span className="px-1.5 py-0.5 text-[10px] font-medium rounded bg-teal-500/15 text-teal-400 border border-teal-500/30">
+              SFW Active
+            </span>
+          )}
         </div>
       </div>
 
-      {/* Stats Grid */}
-      <div className="grid grid-cols-2 gap-2 mb-3 py-3 border-y border-[#00d4ff]/10">
-        <div className="space-y-1">
-          <div className="flex items-center gap-1.5">
-            <Star size={12} className="text-[#ffd700]" fill="currentColor" />
-            <span className="text-xs text-[#8a96b4]">Rating</span>
-          </div>
-          <p className="text-sm font-bold text-[#f0f4ff]">{club.avgRating.toFixed(1)}/5</p>
-        </div>
-        <div className="space-y-1">
-          <div className="text-xs text-[#8a96b4]">Avg Price</div>
-          <p className="text-sm font-bold text-[#00d4ff]">{club.avgPrice} bentos</p>
-        </div>
-        <div className="space-y-1">
-          <div className="text-xs text-[#8a96b4]">Inv Speed</div>
-          <p className="text-sm font-bold text-[#f0f4ff]">{club.invSpeed}/10</p>
-        </div>
-        <div className="space-y-1">
-          <div className="text-xs text-[#8a96b4]">Yeet Speed</div>
-          <p className="text-sm font-bold text-[#f0f4ff]">{club.yeetSpeed}/10</p>
-        </div>
-      </div>
-
-      {/* SFW Badges */}
-      <div className="flex items-center gap-2 mb-3 flex-wrap">
-        {club.sfwFriendly && (
-          <span className="storm-badge">SFW Friendly</span>
-        )}
-        {club.sfwActive && (
-          <span className="storm-badge-accent">SFW Active</span>
-        )}
-      </div>
-
-      {/* Footer */}
-      <div className="flex items-center justify-between pt-2">
-        <p className="text-xs text-[#6b7793]">{club.preparedness}/10 prep</p>
+      {/* Footer actions */}
+      <div className="flex items-center gap-2 pt-1 border-t border-border/50">
+        <button
+          className="flex-1 text-xs font-medium text-center py-1.5 rounded-lg bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20 hover:glow-primary transition-all duration-150"
+          onClick={(e) => { e.stopPropagation(); onSelect(club); }}
+        >
+          View Details
+        </button>
         {club.quickLink && (
-          <div
-            role="button"
-            tabIndex={0}
+          <button
             onClick={handleCopy}
-            onKeyDown={(e) => e.key === "Enter" && handleCopy(e as any)}
-            className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#00d4ff]/15 text-[#4dffff] text-xs font-semibold hover:bg-[#00d4ff]/25 transition-all duration-200 border border-[#00d4ff]/30 cursor-pointer"
+            aria-label={`Copy quick link for ${club.name}`}
+            className="flex items-center gap-1.5 px-2 py-1.5 rounded-lg bg-accent/10 text-accent border border-accent/20 hover:bg-accent/20 transition-all duration-150 shrink-0 text-xs"
           >
-            {copied ? <Check size={11} /> : <Copy size={11} />}
-            <span>{copied ? "Copied" : "Copy"}</span>
-          </div>
+            {copied ? <Check size={12} /> : <Copy size={12} />}
+            <span className="hidden sm:inline">{copied ? "Copied" : "Copy"}</span>
+          </button>
         )}
       </div>
-    </div>
+    </article>
   );
 }
