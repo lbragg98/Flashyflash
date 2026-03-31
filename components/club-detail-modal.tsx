@@ -21,6 +21,26 @@ interface ClubDetailModalProps {
   onClose: () => void;
 }
 
+function ZapRatingFive({ rating, max = 10 }: { rating: number; max?: number }) {
+  const scaled = Math.round((rating / max) * 5);
+
+  return (
+    <div className="flex items-center gap-1" aria-label={`Rating ${rating}/${max}`}>
+      {Array.from({ length: 5 }).map((_, i) => (
+        <Zap
+          key={i}
+          size={12}
+          className={
+            i < scaled
+              ? "fill-[#71c7ff] text-[#71c7ff]"
+              : "text-white/20"
+          }
+        />
+      ))}
+    </div>
+  );
+}
+
 function DetailRow({
   icon,
   label,
@@ -170,15 +190,15 @@ export function ClubDetailModal({
                 </DetailRow>
 
                 <DetailRow icon={<Package size={16} />} label="Preparedness">
-                  {club.preparedness}
+                  <ZapRatingFive rating={club.preparedness} />
                 </DetailRow>
 
                 <DetailRow icon={<Gauge size={16} />} label="Inv Speed">
-                  {club.invSpeed}
+                  <ZapRatingFive rating={club.invSpeed} />
                 </DetailRow>
 
                 <DetailRow icon={<Wind size={16} />} label="Yeet Speed">
-                  {club.yeetSpeed}
+                  <ZapRatingFive rating={club.yeetSpeed} />
                 </DetailRow>
               </div>
             </div>
