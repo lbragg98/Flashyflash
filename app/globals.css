@@ -355,9 +355,11 @@
 }
 
 @layer base {
-  * {
-    @apply border-border outline-ring/50;
+  body {
+    @apply bg-[#050817] text-foreground;
+    background-attachment: fixed;
   }
+}
 
   html {
     min-height: 100%;
