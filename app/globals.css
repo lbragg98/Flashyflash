@@ -285,7 +285,7 @@
       20px 22px;
     background-repeat: repeat;
     will-change: background-position;
-    animation: rain-shift 1.8s linear infinite;
+    animation: rain-shift 0.9s linear infinite;
   }
 
   .rain-droplet {
