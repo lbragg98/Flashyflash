@@ -102,9 +102,11 @@ export default function Home() {
         <header className="mb-10 text-center sm:mb-14">
           <div className="mb-4 inline-flex items-center justify-center gap-3">
             <div className="h-px w-10 storm-divider" />
-            <h1 className="storm-text-glow text-4xl font-black tracking-tight sm:text-5xl">
+            <h1 className="storm-text-glow text-4xl font-black tracking-tight sm:text-5xl flex items-center gap-2">
+              <Zap size={28} className="text-[#71c7ff] drop-shadow-[0_0_8px_#71c7ff]" fill="currentColor" />
               <span className="text-white">Flash</span>
               <span className="text-[#71c7ff]">Hub</span>
+              <Zap size={28} className="text-[#71c7ff] drop-shadow-[0_0_8px_#71c7ff]" fill="currentColor" />
             </h1>
             <div className="h-px w-10 storm-divider" />
           </div>
