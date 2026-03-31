@@ -7,14 +7,18 @@ const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 const rainDrops = [
-  { left: '6%', top: '-10%', size: 4, duration: '1.8s', delay: '0s', opacity: 0.16 },
-  { left: '16%', top: '-16%', size: 5, duration: '2.1s', delay: '0.45s', opacity: 0.2 },
-  { left: '28%', top: '-8%', size: 3, duration: '1.9s', delay: '0.85s', opacity: 0.14 },
-  { left: '41%', top: '-14%', size: 5, duration: '2.2s', delay: '0.25s', opacity: 0.18 },
-  { left: '56%', top: '-10%', size: 4, duration: '2s', delay: '0.65s', opacity: 0.16 },
-  { left: '70%', top: '-15%', size: 5, duration: '2.15s', delay: '0.15s', opacity: 0.2 },
-  { left: '84%', top: '-12%', size: 4, duration: '1.95s', delay: '0.95s', opacity: 0.16 },
-  { left: '94%', top: '-18%', size: 3, duration: '1.85s', delay: '0.5s', opacity: 0.14 },
+  { left: '4%', top: '-10%', size: 4, duration: '1.03s', delay: '0s', opacity: 0.17 },
+  { left: '12%', top: '-16%', size: 5, duration: '1.2s', delay: '0.35s', opacity: 0.22 },
+  { left: '20%', top: '-8%', size: 3, duration: '1.09s', delay: '0.7s', opacity: 0.15 },
+  { left: '28%', top: '-14%', size: 4, duration: '1.17s', delay: '0.2s', opacity: 0.18 },
+  { left: '37%', top: '-12%', size: 5, duration: '1.26s', delay: '0.55s', opacity: 0.2 },
+  { left: '46%', top: '-18%', size: 4, duration: '1.14s', delay: '0.1s', opacity: 0.17 },
+  { left: '55%', top: '-10%', size: 5, duration: '1.23s', delay: '0.45s', opacity: 0.22 },
+  { left: '63%', top: '-15%', size: 3, duration: '1.06s', delay: '0.8s', opacity: 0.15 },
+  { left: '71%', top: '-9%', size: 4, duration: '1.12s', delay: '0.25s', opacity: 0.18 },
+  { left: '79%', top: '-17%', size: 5, duration: '1.29s', delay: '0.6s', opacity: 0.2 },
+  { left: '88%', top: '-11%', size: 4, duration: '1.11s', delay: '0.95s', opacity: 0.17 },
+  { left: '95%', top: '-19%', size: 3, duration: '1.05s', delay: '0.4s', opacity: 0.15 },
 ]
 
 export const metadata: Metadata = {
