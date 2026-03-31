@@ -6,7 +6,7 @@ import {
   X,
   Copy,
   Check,
-  Star,
+  Zap,
   MessageSquare,
   Gauge,
   Wind,
@@ -111,7 +111,7 @@ export function ClubDetailModal({
               </span>
 
               <span className="inline-flex items-center gap-1 rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-xs text-[#dce9ff]">
-                <Star size={12} className="fill-[#71c7ff] text-[#71c7ff]" />
+                <Zap size={12} className="fill-[#71c7ff] text-[#71c7ff]" />
                 {club.avgRating.toFixed(1)}
               </span>
 
@@ -189,7 +189,7 @@ export function ClubDetailModal({
               </h3>
 
               <div className="space-y-3">
-                <DetailRow icon={<Star size={16} />} label="Avg Rating">
+                <DetailRow icon={<Zap size={16} />} label="Avg Rating">
                   {club.avgRating.toFixed(1)}
                 </DetailRow>
 

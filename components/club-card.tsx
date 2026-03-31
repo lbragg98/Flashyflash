@@ -1,7 +1,7 @@
 "use client";
 
 import { Club } from "@/lib/clubs";
-import { Star, Clock, Check } from "lucide-react";
+import { Zap, Clock, Check } from "lucide-react";
 interface ClubCardProps {
   club: Club;
   onSelect: (club: Club) => void;
@@ -14,13 +14,13 @@ const FLASH_TYPE_STYLES: Record<string, string> = {
   Hybrid: "border-teal-400/30 bg-teal-400/10 text-teal-200",
 };
 
-function StarRating({ rating }: { rating: number }) {
+function ZapRating({ rating }: { rating: number }) {
   const full = Math.round(rating);
 
   return (
     <div className="flex items-center gap-1" aria-label={`Rating ${rating}`}>
       {Array.from({ length: 5 }).map((_, i) => (
-        <Star
+        <Zap
           key={i}
           size={12}
           className={
@@ -60,7 +60,7 @@ export function ClubCard({ club, onSelect }: ClubCardProps) {
               {club.name}
             </h3>
             <div className="flex items-center gap-1 flex-shrink-0">
-              <Star size={14} className="fill-[#71c7ff] text-[#71c7ff]" />
+              <Zap size={14} className="fill-[#71c7ff] text-[#71c7ff]" />
               <span className="text-sm font-semibold text-[#71c7ff]">{club.avgRating.toFixed(1)}</span>
             </div>
           </div>
@@ -95,7 +95,7 @@ export function ClubCard({ club, onSelect }: ClubCardProps) {
       </div>
 
       <div className="mb-4 flex items-center justify-between gap-3">
-        <StarRating rating={club.avgRating} />
+        <ZapRating rating={club.avgRating} />
         <div className="flex items-center gap-2 text-xs text-[#9ea9c5]">
           <Clock size={12} />
           <span>{club.clubAge <= 1 ? `${club.clubAge} year old` : `${club.clubAge} years old`}</span>
