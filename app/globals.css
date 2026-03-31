@@ -274,26 +274,25 @@
     inset: 0;
     pointer-events: none;
     z-index: -1;
-    opacity: 0.028;
+    opacity: 0.03;
     background-image:
       radial-gradient(circle, rgb(255 255 255 / 0.2) 0 0.8px, transparent 1.1px),
       radial-gradient(circle, rgb(140 190 255 / 0.16) 0 0.9px, transparent 1.3px),
       radial-gradient(circle, rgb(255 255 255 / 0.14) 0 0.7px, transparent 1px);
     background-size:
-      26px 30px,
-      34px 38px,
-      22px 24px;
+      22px 24px,
+      30px 32px,
+      20px 22px;
     background-repeat: repeat;
-    animation: rain-shift 2s linear infinite;
+    will-change: background-position;
+    animation: rain-shift 1.8s linear infinite;
   }
 
   .rain-droplet {
     background:
       radial-gradient(circle at 35% 30%, rgb(255 255 255 / 0.95) 0, rgb(185 220 255 / 0.78) 38%, rgb(125 176 255 / 0.18) 70%, transparent 100%);
-    filter: blur(0.35px);
-    box-shadow:
-      0 0 10px rgb(180 220 255 / 0.12),
-      0 0 2px rgb(255 255 255 / 0.3);
+    box-shadow: 0 0 4px rgb(180 220 255 / 0.12);
+    will-change: transform, opacity;
     animation: droplet-fall linear infinite;
   }
 
@@ -361,25 +360,25 @@
 
   /* Neon glow on all text by color */
   .text-white,
-  .text-\[#f0f4ff\],
-  .text-\[#dce9ff\],
-  .text-\[#cfeaff\] {
+  [class*='text-[#f0f4ff]'],
+  [class*='text-[#dce9ff]'],
+  [class*='text-[#cfeaff]'] {
     text-shadow:
       0 0 8px rgb(220 233 255 / 0.35),
       0 0 20px rgb(200 220 255 / 0.15);
   }
 
-  .text-\[#71c7ff\],
-  .text-\[#a7dcff\],
-  .text-\[#9ea9c5\] {
+  [class*='text-[#71c7ff]'],
+  [class*='text-[#a7dcff]'],
+  [class*='text-[#9ea9c5]'] {
     text-shadow:
       0 0 8px rgb(113 199 255 / 0.55),
       0 0 20px rgb(113 199 255 / 0.3),
       0 0 40px rgb(113 199 255 / 0.15);
   }
 
-  .text-\[#7f8cac\],
-  .text-\[#9ea9c5\] {
+  [class*='text-[#7f8cac]'],
+  [class*='text-[#9ea9c5]'] {
     text-shadow:
       0 0 6px rgb(127 140 172 / 0.4),
       0 0 16px rgb(127 140 172 / 0.2);
