@@ -6,7 +6,7 @@ import {
   X,
   Copy,
   Check,
-  Star,
+  Zap,
   MessageSquare,
   Gauge,
   Wind,
@@ -19,31 +19,6 @@ import {
 interface ClubDetailModalProps {
   club: Club | null;
   onClose: () => void;
-}
-
-function StatBar({
-  value,
-  max = 5,
-}: {
-  value: number;
-  max?: number;
-}) {
-  const pct = Math.min(100, (value / max) * 100);
-
-  return (
-    <div className="w-full">
-      <div className="mb-1 flex items-center justify-between text-xs text-[#9ea9c5]">
-        <span>{value.toFixed(1)}</span>
-        <span>{max}</span>
-      </div>
-      <div className="h-2 overflow-hidden rounded-full bg-white/8">
-        <div
-          className="h-full rounded-full bg-gradient-to-r from-[#71c7ff] to-[#a977ff]"
-          style={{ width: `${pct}%` }}
-        />
-      </div>
-    </div>
-  );
 }
 
 function DetailRow({
@@ -136,7 +111,7 @@ export function ClubDetailModal({
               </span>
 
               <span className="inline-flex items-center gap-1 rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-xs text-[#dce9ff]">
-                <Star size={12} className="fill-[#71c7ff] text-[#71c7ff]" />
+                <Zap size={12} className="fill-[#71c7ff] text-[#71c7ff]" />
                 {club.avgRating.toFixed(1)}
               </span>
 
@@ -195,15 +170,15 @@ export function ClubDetailModal({
                 </DetailRow>
 
                 <DetailRow icon={<Package size={16} />} label="Preparedness">
-                  <StatBar value={club.preparedness} />
+                  {club.preparedness}
                 </DetailRow>
 
                 <DetailRow icon={<Gauge size={16} />} label="Inv Speed">
-                  <StatBar value={club.invSpeed} />
+                  {club.invSpeed}
                 </DetailRow>
 
                 <DetailRow icon={<Wind size={16} />} label="Yeet Speed">
-                  <StatBar value={club.yeetSpeed} />
+                  {club.yeetSpeed}
                 </DetailRow>
               </div>
             </div>
@@ -214,7 +189,7 @@ export function ClubDetailModal({
               </h3>
 
               <div className="space-y-3">
-                <DetailRow icon={<Star size={16} />} label="Avg Rating">
+                <DetailRow icon={<Zap size={16} />} label="Avg Rating">
                   {club.avgRating.toFixed(1)}
                 </DetailRow>
 
