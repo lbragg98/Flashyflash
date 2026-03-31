@@ -1,9 +1,7 @@
 "use client";
 
 import { Club } from "@/lib/clubs";
-import { Copy, Star, Clock, Check, Link2 } from "lucide-react";
-import { useState } from "react";
-
+import { Star, Clock, Check } from "lucide-react";
 interface ClubCardProps {
   club: Club;
   onSelect: (club: Club) => void;
@@ -37,22 +35,9 @@ function StarRating({ rating }: { rating: number }) {
 }
 
 export function ClubCard({ club, onSelect }: ClubCardProps) {
-  const [copied, setCopied] = useState(false);
-
   const flashTypeClass =
     FLASH_TYPE_STYLES[club.flashType] ??
     "border-white/10 bg-white/5 text-white";
-
-  const handleCopy = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation();
-
-    if (!club.quickLink) return;
-
-    await navigator.clipboard.writeText(club.quickLink);
-    setCopied(true);
-
-    window.setTimeout(() => setCopied(false), 1500);
-  };
 
   return (
     <article
@@ -111,7 +96,7 @@ export function ClubCard({ club, onSelect }: ClubCardProps) {
             Age
           </p>
           <p className="mt-1 text-sm font-semibold text-white">
-            {club.clubAge}
+            {club.clubAge <= 1 ? `${club.clubAge} year old` : `${club.clubAge} years old`}
           </p>
         </div>
       </div>
@@ -120,7 +105,7 @@ export function ClubCard({ club, onSelect }: ClubCardProps) {
         <StarRating rating={club.avgRating} />
         <div className="flex items-center gap-2 text-xs text-[#9ea9c5]">
           <Clock size={12} />
-          <span>{club.clubAge} old</span>
+          <span>{club.clubAge <= 1 ? `${club.clubAge} year old` : `${club.clubAge} years old`}</span>
         </div>
       </div>
 
@@ -139,19 +124,6 @@ export function ClubCard({ club, onSelect }: ClubCardProps) {
           </span>
         )}
       </div>
-
-      {club.quickLink && (
-        <div className="flex items-center gap-2">
-          <button
-            onClick={handleCopy}
-            className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm font-medium text-[#dce9ff] transition hover:bg-white/10"
-            aria-label={copied ? "Copied quick link" : "Copy quick link"}
-          >
-            {copied ? <Check size={15} /> : <Link2 size={15} />}
-            <span>{copied ? "Copied" : "Copy"}</span>
-          </button>
-        </div>
-      )}
     </article>
   );
 }
