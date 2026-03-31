@@ -6,6 +6,15 @@ import './globals.css'
 const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
+const rainDrops = [
+  { left: '8%', top: '-8%', size: 4, duration: '2.8s', delay: '0s', opacity: 0.2 },
+  { left: '22%', top: '-14%', size: 5, duration: '3.4s', delay: '2s', opacity: 0.26 },
+  { left: '37%', top: '-10%', size: 3, duration: '3s', delay: '4.5s', opacity: 0.18 },
+  { left: '54%', top: '-16%', size: 6, duration: '3.6s', delay: '1.5s', opacity: 0.24 },
+  { left: '68%', top: '-12%', size: 4, duration: '3.2s', delay: '6s', opacity: 0.22 },
+  { left: '83%', top: '-18%', size: 5, duration: '3.8s', delay: '3.5s', opacity: 0.2 },
+]
+
 export const metadata: Metadata = {
   title: 'FlashHub',
   description: 'Discover. Compare. Flash.',
@@ -46,16 +55,19 @@ export default function RootLayout({
           <div className="lightning-flash-bg" />
           <div className="ambient-glow" />
 
-          {/* Rain streaks */}
-          {[...Array(6)].map((_, i) => (
+          {/* Slow rain droplets */}
+          {rainDrops.map((drop, i) => (
             <div
               key={i}
-              className="absolute w-px bg-gradient-to-b from-transparent via-blue-300/30 to-transparent pointer-events-none"
+              className="rain-droplet pointer-events-none absolute rounded-full"
               style={{
-                height: '100vh',
-                left: `${Math.random() * 100}%`,
-                animation: `rain-fall ${2 + Math.random() * 1.5}s linear infinite`,
-                animationDelay: `${Math.random() * 2}s`,
+                left: drop.left,
+                top: drop.top,
+                width: `${drop.size}px`,
+                height: `${Math.round(drop.size * 1.6)}px`,
+                opacity: drop.opacity,
+                animationDuration: drop.duration,
+                animationDelay: drop.delay,
               }}
             />
           ))}
