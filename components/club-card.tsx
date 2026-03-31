@@ -80,7 +80,7 @@ export function ClubCard({ club, onSelect }: ClubCardProps) {
             Avg Price
           </p>
           <p className="mt-1 text-sm font-semibold text-white">
-            {club.avgPrice}
+            {club.avgPrice 'Bentos'}
           </p>
         </div>
 
