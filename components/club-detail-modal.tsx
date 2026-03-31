@@ -21,31 +21,6 @@ interface ClubDetailModalProps {
   onClose: () => void;
 }
 
-function StatBar({
-  value,
-  max = 5,
-}: {
-  value: number;
-  max?: number;
-}) {
-  const pct = Math.min(100, (value / max) * 100);
-
-  return (
-    <div className="w-full">
-      <div className="mb-1 flex items-center justify-between text-xs text-[#9ea9c5]">
-        <span>{value.toFixed(1)}</span>
-        <span>{max}</span>
-      </div>
-      <div className="h-2 overflow-hidden rounded-full bg-white/8">
-        <div
-          className="h-full rounded-full bg-gradient-to-r from-[#71c7ff] to-[#a977ff]"
-          style={{ width: `${pct}%` }}
-        />
-      </div>
-    </div>
-  );
-}
-
 function DetailRow({
   icon,
   label,
@@ -195,15 +170,15 @@ export function ClubDetailModal({
                 </DetailRow>
 
                 <DetailRow icon={<Package size={16} />} label="Preparedness">
-                  <StatBar value={club.preparedness} />
+                  {club.preparedness}
                 </DetailRow>
 
                 <DetailRow icon={<Gauge size={16} />} label="Inv Speed">
-                  <StatBar value={club.invSpeed} />
+                  {club.invSpeed}
                 </DetailRow>
 
                 <DetailRow icon={<Wind size={16} />} label="Yeet Speed">
-                  <StatBar value={club.yeetSpeed} />
+                  {club.yeetSpeed}
                 </DetailRow>
               </div>
             </div>
