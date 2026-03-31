@@ -355,12 +355,6 @@
 }
 
 @layer base {
-  body {
-    @apply bg-[#050817] text-foreground;
-    background-attachment: fixed;
-  }
-}
-
   html {
     min-height: 100%;
     overflow-y: scroll;
