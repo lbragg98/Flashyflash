@@ -54,11 +54,17 @@ export function ClubCard({ club, onSelect }: ClubCardProps) {
       className="storm-panel group rounded-3xl p-5 transition duration-200 hover:-translate-y-0.5 hover:border-[#71c7ff]/35 hover:shadow-[0_16px_40px_rgba(0,0,0,0.34)]"
     >
       <div className="mb-4 flex items-start justify-between gap-3">
-        <div className="min-w-0">
-          <h3 className="truncate text-lg font-semibold text-white">
-            {club.name}
-          </h3>
-          <div className="mt-2 flex items-center gap-2">
+        <div className="min-w-0 flex-1">
+          <div className="flex items-center gap-2 mb-2">
+            <h3 className="truncate text-lg font-semibold text-white">
+              {club.name}
+            </h3>
+            <div className="flex items-center gap-1 flex-shrink-0">
+              <Star size={14} className="fill-[#71c7ff] text-[#71c7ff]" />
+              <span className="text-sm font-semibold text-[#71c7ff]">{club.avgRating.toFixed(1)}</span>
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
             <span
               className={`inline-flex rounded-full border px-2.5 py-1 text-xs font-medium ${flashTypeClass}`}
             >
@@ -66,22 +72,9 @@ export function ClubCard({ club, onSelect }: ClubCardProps) {
             </span>
           </div>
         </div>
-
-        <div className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-xs font-semibold text-[#d7e8ff]">
-          {club.avgRating.toFixed(1)}
-        </div>
       </div>
 
-      <div className="mb-4 grid grid-cols-3 gap-2">
-        <div className="storm-panel-soft rounded-2xl p-3 text-center">
-          <p className="text-[11px] uppercase tracking-wide text-[#8f9bbb]">
-            Rating
-          </p>
-          <p className="mt-1 text-sm font-semibold text-white">
-            {club.avgRating.toFixed(1)}
-          </p>
-        </div>
-
+      <div className="mb-4 grid grid-cols-2 gap-2">
         <div className="storm-panel-soft rounded-2xl p-3 text-center">
           <p className="text-[11px] uppercase tracking-wide text-[#8f9bbb]">
             Avg Price
