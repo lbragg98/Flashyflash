@@ -363,19 +363,12 @@
     min-height: 100%;
     overflow-y: scroll;
     scrollbar-gutter: stable;
-    background-color: #09101d;
-    background-image:
-      radial-gradient(circle at 20% 15%, rgb(75 120 255 / 0.15), transparent 20%),
-      radial-gradient(circle at 80% 10%, rgb(150 100 255 / 0.1), transparent 18%),
-      linear-gradient(180deg, #09101d 0%, #0d1526 35%, #101a30 70%, #17233d 100%);
-    background-attachment: fixed;
   }
 
   body {
     @apply bg-background text-foreground;
     min-height: 100vh;
     overflow-x: hidden;
-    background-color: #09101d;
     background:
       radial-gradient(circle at 20% 15%, rgb(75 120 255 / 0.15), transparent 20%),
       radial-gradient(circle at 80% 10%, rgb(150 100 255 / 0.1), transparent 18%),
